@@ -1,15 +1,17 @@
 # mySatComm
 Homebrew groundstation for receiving data from satellites
 
+
 ## Project Breakdown
 * Antenna Design
   * Linearly Polarized Yagi Antenna
-    * Currently 3-element, basic dipole design, 1 driven element
+  * Currently 3-element implementing a basic dipole antenna
 * Az-El Controller
-  * 2 servo motors connected to the antenna
+  * 2 servo motors control antenna orientation
   * Using Arduino and GPredict to actuate
 * Data Reception
-   * Using the NooElec NESDR software-defined radio to pull in the data
+   * Using the NooElec NESDR for a radio
+   * Using GNURadio to implement the needed DSP
 * Decoding
    * TBD
 
@@ -17,9 +19,11 @@ Homebrew groundstation for receiving data from satellites
 SolidWorks
 - Mechanical design software by Dassault Systems
 - Not free; requires a license
+
 Arduino IDE
 - Used to implement motor controller
 - Open source
+
 GNURadio
 - Software-Defined Radio programming package
 - Free to use
