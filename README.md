@@ -28,6 +28,10 @@ GNURadio
 - Software-Defined Radio programming package
 - Free to use
 
+GPredict
+- Satellite position tracker/predicter
+- Free to use
+
 ## Folder Guide
 * Mechanical
   - Contains all CAD designs
