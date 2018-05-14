@@ -1,0 +1,5 @@
+PVC Pipe       | Size Pending
+Coat hangers | Design pending
+SDR               | I used the NooElec NESDR Mini
+Arduino MCU | Uno should do
+2x Servomotors | I used Sain Smart SR319
