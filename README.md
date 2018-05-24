@@ -33,9 +33,10 @@ GPredict
 - Free to use
 
 ## Folder Guide
-* Mechanical
+* mechanical
   - Contains all CAD designs
-* MCU
+* cmd-n-ctl
    - Code for antenna orientation controller
-* SDR
+   - Code for GPredict controller interfacing
+* sdr
   - Code for radio interfacing
