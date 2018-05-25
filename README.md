@@ -3,7 +3,7 @@ Homebrew groundstation for receiving data from satellites
 
 ## Quick Reference
 * [Controller Design](mechanical/drawings/controller.PDF)
-* [Dipole Antenna Design](mechanical/drawings/antenna.PDF)
+* [Dipole Antenna Design](mechanical/drawings/dipole.PDF)
 * [Materials Used](BOM.txt)
 
 ## Project Breakdown
