@@ -13,9 +13,6 @@ Homebrew groundstation for receiving data from satellites
 * [Data Reception](sdr/rx)
 * [Data Decoding](sdr/decoder)
 
-## Authors
-* **Marion Anderson** - *Mechanical design, fabrication, programming, and DSP* - [lmander42](https://github.com/lmander42)
-
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) file for details
 
