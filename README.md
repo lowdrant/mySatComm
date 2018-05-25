@@ -8,7 +8,7 @@ Homebrew groundstation for receiving data from satellites
 
 ## Project Breakdown
 * [Antenna Design](mechanical/antenna)
-* [Az-El Controller](mechanical/controller)
+* [Az-El Controller](mechanical/azel_controller)
 * [Control Software](cmd-n-ctl/)
 * [Data Reception](sdr/rx)
 * [Data Decoding](sdr/decoder)
