@@ -1,0 +1,9 @@
+1. Connecting AGND to Arduino GND and AO0 to servo power causes a short, forcing AO0 to give ~3.5V
+     - MyDAQ cannot supply power to servos with Arduino controller
+     - Hopefully Raspberry Pi does not have this issue
+
+2. AGND confirmed to be ground to +15V and -15V supplies
+    - Can use AGND as reference when using MyDAQ as power supply
+
+3.  MyDAQ can be powered from Ubuntu, without NI Instrument launcher
+	- Can run GPredict (more natively) in Ubuntu and still use MyDAQ as power supply
