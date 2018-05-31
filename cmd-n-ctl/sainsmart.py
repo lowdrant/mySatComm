@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-from future import print_function, absolute_import
+from __future__ import print_function, absolute_import
 
 import pigpio
 
@@ -41,7 +41,7 @@ class SainSmart(pigpio.pi):
         if freq >= 50 and freq <= 330:
             pass
         else:
-            raise SainSmartException('Operating frequency out of range.'')
+            raise SainSmartException('Operating frequency out of range.')
 
         self.freq = freq
         self.min  = 500   # minimum control pulsewidth in microseconds
