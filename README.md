@@ -68,5 +68,8 @@ This is a farm-to-table amateur radio project composed of 3 major subprojects:
 * [SolidWorks](https://www.solidworks.com/) - CAD software 
 * [SainSmart](https://www.com.sainsmart) - Robotic components manufacturer
 
+## Author
+Marion Anderson - [lmander42](https://github.com/lmander42)
+
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) file for details

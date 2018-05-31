@@ -6,12 +6,13 @@ author: Marion Anderson
 date:   2018-05-30
 file:   sainsmart.py
 """
-from future import print_function, absolute_import
 import pigpio
+
 
 class SainSmartException(Exception):
     """SainSmart class generic exception"""
     pass
+
 
 class SainSmart(pigpio.pi):
     """Interface to SainSmart 318 and 319 servomotors using PiGPIO.
@@ -32,10 +33,10 @@ class SainSmart(pigpio.pi):
         link in the class docstring. See Raspberry Pi and SainSmart
         documentation for acceptable parameter values for you equipment.
 
-        You may notice that pigpio.pi.__init Inheritance is not initiated hereself.
+        You may notice that pigpio.pi.__init inheritance is not called here.
         This is because the pigpio.pi class reserves resources from a daemon.
-        The inheritance is initiated in SainSmart.attach(), where it is more
-        clear that the resources are about to be utilized.
+        It is called in SainSmart.attach(), where it is more clear that the
+        resources are about to be utilized.
 
         Args:
             freq (int, default=50): Frequency (Hz) of servo operation
@@ -47,11 +48,11 @@ class SainSmart(pigpio.pi):
         if freq >= 50 and freq <= 330:
             pass
         else:
-            raise SainSmartException('Operating frequency out of range.'')
+            raise SainSmartException('Operating frequency out of range.')
 
         self.freq = freq
-        self.min  = 500   # minimum control pulsewidth in microseconds
-        self.max  = 2500  # maximum control pulsewidth in microseconds
+        self.min = 500   # minimum control pulsewidth in microseconds
+        self.max = 2500  # maximum control pulsewidth in microseconds
         self.attached = False  # servo attachment flag
 
     def attach(self, pin):
@@ -63,7 +64,7 @@ class SainSmart(pigpio.pi):
         pigpio.pi.__init()
 
         self.pin = pin
-        self.set_mode(self.pin, pigpio.OUTPUT)       # use self.pin for implicit
+        self.set_mode(self.pin, pigpio.OUTPUT)       # self.pin for implicit
         self.set_PWM_frequency(self.pin, self.freq)  # assignment validation
 
         self.attached = True  # if no errors, servo should now be attached
@@ -91,16 +92,16 @@ class SainSmart(pigpio.pi):
         self.set_servo_pulsewidth(self.pin, microseconds)
         self.postion = microseconds
 
-        # TODO: Determine if SainSmart servos need the pulsewidth set back to 0.
+        # TODO: Determine if SainSmart servos need pulsewidth set back to 0.
         # pigpio documentation states that set_servo_pulsewidth maintains a
         # value until it is changed.
 
     def read(self):
         """Reads current servo position
 
-        Really just returns the las value written to the servo. This is the only
-        option, as SainSmart servos work in open loop control and cannot
-        send back data.
+        Really just returns the last value written to the servo. This is really
+        is the only option, as SainSmart servos work in open loop control and
+        cannot send back data.
 
         Returns:
             (int): Current servo position in microseconds

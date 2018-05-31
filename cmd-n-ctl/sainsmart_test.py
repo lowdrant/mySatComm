@@ -1,15 +1,14 @@
-#! /usr/bin/env python
 """
-Script for testing SainSmart class servo interface and timing
+A script for testing the SainSmart class servo interface and timing.
 
 author: Marion Anderson
 date:   2018-05-30
 file:   sainsmart_test.py
 """
-from future import print_function, absolute_import
+
 from sainsmart import SainSmart
 
-from sys import argv, exit
+from sys import exit
 from time import sleep
 
 from random import uniform
