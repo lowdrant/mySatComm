@@ -27,14 +27,19 @@ This is a farm-to-table amateur radio project composed of 3 major subprojects:
 * [Dipole ](mechanical/drawings/dipole.PDF)
 * [Materials](BOM.txt)
 
+### Software Quick Reference
+* [PiGPIO (Servo PWM Library)](http://abyz.me.uk/rpi/pigpio/pigpiod.html)
+* [HamLib (GPredict Command Library)](http://hamlib.sourceforge.net/manuals/1.2.15/index.html)
+* [HamLib on RPi](https://kb9mwr.blogspot.com/2013/04/raspberry-pi-web-based-rig-control.html)
+* [Servo Characterization](cmd-n-ctl/Sweep/Sweep.ino)
 
 ## Design Decisions
 ### Antenna
 * 3-element linearly polarized yagi antenna
 	* Directionality recommended for satellite reception
-	* Circular polarization is difficult to get right
+	* Circular polarization is difficult (for me) to get right
 * Homebrew dipole antenna base made from PVC and coat hangers
-	* Coat hanger antennas are aesthetic af
+	* Coat hanger antennas are aesthetic
 	* Cheap COTS parts Increase accessiblity
 	
 ### Controller
@@ -50,10 +55,12 @@ This is a farm-to-table amateur radio project composed of 3 major subprojects:
 	* Free, real-time satellite tracking
 	* Computes antenna orientation
 	* Can send antenna orientation commands over TCP/IP
+	* [Manual here](documentation/gpredict_manual.PDF)
 * PiGPIO
 	* Provides hardware-time PWM (HUGE for servo control)
 	* PWM way less noisy and more reliable than RPi-GPIO or wiringPi
 	* Both Python and C interfaces
+
 ## Software/Retailer Links
 * [GPredict](http://gpredict.oz9aec.net/) - Satellite tracking and antenna actuation software
 * [PiGPIO](http://abyz.me.uk/rpi/pigpio/index.html) - Provides hardware-timed GPIO control on Raspberry Pi
