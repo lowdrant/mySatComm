@@ -40,7 +40,7 @@ This is a farm-to-table amateur radio project composed of 3 major subprojects:
 * [PiGPIO (Servo PWM Library)](http://abyz.me.uk/rpi/pigpio/pigpiod.html)
 * [HamLib (GPredict Command Library)](http://hamlib.sourceforge.net/manuals/1.2.15/index.html)
 * [HamLib on RPi](https://kb9mwr.blogspot.com/2013/04/raspberry-pi-web-based-rig-control.html)
-* [Servo Characterization](cmd-n-ctl/Sweep/Sweep.ino)
+* [Servo Characterization](cmd-n-ctl/servo-tests)
 
 ## Design Decisions
 ### Antenna
