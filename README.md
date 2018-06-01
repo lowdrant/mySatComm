@@ -1,11 +1,21 @@
 # mySatComm
 Homebrew groundstation for receiving data from satellites
 
+## Installation
+Run [install.sh](install.sh) to install all dependencies
+
+## Software/Retailer Links
+* [GPredict](http://gpredict.oz9aec.net/) - Satellite tracking and antenna actuation software
+* [PiGPIO](http://abyz.me.uk/rpi/pigpio/index.html) - Provides hardware-timed GPIO control on Raspberry Pi
+* [Raspberry Pi](https://www.raspberrypi.org/) - Hobbyist-oriented single-board computer
+* [SolidWorks](https://www.solidworks.com/) - CAD software
+* [SainSmart](https://www.com.sainsmart) - Robotic components manufacturer
+
 ## Project Overview
 This is a farm-to-table amateur radio project composed of 3 major subprojects:
 
 * Mechanical Design
-	* Antenna Rig 
+	* Antenna Rig
 	* Orientation Controller
 * Command & Control Software
 	* Servomotor control
@@ -13,7 +23,6 @@ This is a farm-to-table amateur radio project composed of 3 major subprojects:
 * Digital Signal Processing
 	* Radio demodulation and doppler shifting
 	* Information decoding
-
 
 ### Project Subfolders
 * [Antenna Design](mechanical/antenna)
@@ -41,9 +50,9 @@ This is a farm-to-table amateur radio project composed of 3 major subprojects:
 * Homebrew dipole antenna base made from PVC and coat hangers
 	* Coat hanger antennas are aesthetic
 	* Cheap COTS parts Increase accessiblity
-	
+
 ### Controller
-* Custom-made servo brackets (sized for [SainSmart SR319](https://www.sainsmart.com/products/copy-of-all-purpose-digital-servo-sr318?nosto=customers-also-bought)) 
+* Custom-made servo brackets (sized for [SainSmart SR319](https://www.sainsmart.com/products/copy-of-all-purpose-digital-servo-sr318?nosto=customers-also-bought))
 	* Had two of those servos on-hand
 	* SainSmart doesn't really sell  individual brackets  ($$)
 * Custom platform stand
@@ -61,12 +70,7 @@ This is a farm-to-table amateur radio project composed of 3 major subprojects:
 	* PWM way less noisy and more reliable than RPi-GPIO or wiringPi
 	* Both Python and C interfaces
 
-## Software/Retailer Links
-* [GPredict](http://gpredict.oz9aec.net/) - Satellite tracking and antenna actuation software
-* [PiGPIO](http://abyz.me.uk/rpi/pigpio/index.html) - Provides hardware-timed GPIO control on Raspberry Pi
-* [Raspberry Pi](https://www.raspberrypi.org/) - Hobbyist-oriented single-board computer
-* [SolidWorks](https://www.solidworks.com/) - CAD software 
-* [SainSmart](https://www.com.sainsmart) - Robotic components manufacturer
-
+## Author
+Marion Anderson - [lmander42](https://github.com/lmander42)
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) file for details
