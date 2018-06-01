@@ -8,7 +8,7 @@ file:   cli-servo
 """
 from __future__ import print_function, absolute_import
 from sys import argv, exit, path
-from os import system, getcwd
+from os import getcwd
 
 # TODO: Make sainsmart.py a proper module
 path.append(getcwd()[0:getcwd().rfind('/')])  # path to sainsmart.py
@@ -27,11 +27,11 @@ def helpmsg():
     helpstr += '               (defaults to a continous command interface)'
     print(helpstr)
 
+
 myServo = SainSmart()  # instantiate servo
 
 if __name__ == '__main__':
     # Initial Setup
-    #system('sudo pigpiod &>/dev/null')  # run daemon
     go = False  # avoid real-time interface by default
 
     # Help Message Display
@@ -67,5 +67,4 @@ if __name__ == '__main__':
 
     # Releasing Resources
     myServo.detach()
-    #system('sudo killall pigpiod &> /dev/null')
     exit(0)

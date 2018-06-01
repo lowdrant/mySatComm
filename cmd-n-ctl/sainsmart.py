@@ -6,11 +6,8 @@ author: Marion Anderson
 date:   2018-05-30
 file:   sainsmart.py
 """
-<<<<<<< HEAD
-=======
 from __future__ import print_function, absolute_import
 from time import sleep
->>>>>>> 2e69a758b8840ecd2e68871d49223b60e8eb61d8
 import pigpio
 
 
@@ -19,11 +16,8 @@ class SainSmartException(Exception):
     pass
 
 
-<<<<<<< HEAD
-class SainSmart(pigpio.pi):
-=======
 class SainSmart(object):
->>>>>>> 2e69a758b8840ecd2e68871d49223b60e8eb61d8
+
     """Interface to SainSmart 318 and 319 servomotors using PiGPIO.
 
     Inherits pigpio.pi class to allow access to other methods
@@ -73,13 +67,8 @@ class SainSmart(object):
         self.pi = pigpio.pi()
 
         self.pin = pin
-<<<<<<< HEAD
-        self.set_mode(self.pin, pigpio.OUTPUT)       # self.pin for implicit
-        self.set_PWM_frequency(self.pin, self.freq)  # assignment validation
-=======
         self.pi.set_mode(self.pin, pigpio.OUTPUT)
         self.pi.set_PWM_frequency(self.pin, self.freq)
->>>>>>> 2e69a758b8840ecd2e68871d49223b60e8eb61d8
 
         self.attached = True  # if no errors, servo should now be attached
 
@@ -107,28 +96,16 @@ class SainSmart(object):
         self.pi.set_servo_pulsewidth(self.pin, microseconds)
         self.postion = microseconds
 
-<<<<<<< HEAD
-        # TODO: Determine if SainSmart servos need pulsewidth set back to 0.
-        # pigpio documentation states that set_servo_pulsewidth maintains a
-        # value until it is changed.
-=======
         # turn off PWM
         sleep(0.02)  # determined experimentaly with sainsmart_test.py
         self.pi.set_servo_pulsewidth(self.pin, 0)
->>>>>>> 2e69a758b8840ecd2e68871d49223b60e8eb61d8
 
     def read(self):
         """Reads current servo position
 
-<<<<<<< HEAD
-        Really just returns the last value written to the servo. This is really
-        is the only option, as SainSmart servos work in open loop control and
-        cannot send back data.
-=======
         Just returns the last value written to the servo. This is the only
         option, as SainSmart servos work in open loop control and cannot
         send back data.
->>>>>>> 2e69a758b8840ecd2e68871d49223b60e8eb61d8
 
         Returns:
             (int): Current servo position in microseconds
