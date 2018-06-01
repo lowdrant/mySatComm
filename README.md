@@ -1,11 +1,21 @@
 # mySatComm
-Homebrew groundstation for receiving data from satellites
+Homebrew groundstation for receiving data from satellites. Servos are controlled via Raspberry Pi, and DSP is handled through the GNU Radio and GPredict programs.
+
+## Installation
+Clone this repo to your Raspberry Pi and run [install.sh](install.sh) to install all dependencies. Currently only works on Debian-based distros.
+
+## Software/Retailer Links
+* [GPredict](http://gpredict.oz9aec.net/) - Satellite tracking and antenna actuation software
+* [PiGPIO](http://abyz.me.uk/rpi/pigpio/index.html) - Provides hardware-timed GPIO control on Raspberry Pi
+* [Raspberry Pi](https://www.raspberrypi.org/) - Hobbyist-oriented single-board computer
+* [SolidWorks](https://www.solidworks.com/) - CAD software
+* [SainSmart](https://www.com.sainsmart) - Robotic components manufacturer
 
 ## Project Overview
 This is a farm-to-table amateur radio project composed of 3 major subprojects:
 
 * Mechanical Design
-	* Antenna Rig 
+	* Antenna Rig
 	* Orientation Controller
 * Command & Control Software
 	* Servomotor control
@@ -13,7 +23,6 @@ This is a farm-to-table amateur radio project composed of 3 major subprojects:
 * Digital Signal Processing
 	* Radio demodulation and doppler shifting
 	* Information decoding
-
 
 ### Project Subfolders
 * [Antenna Design](mechanical/antenna)
@@ -31,7 +40,7 @@ This is a farm-to-table amateur radio project composed of 3 major subprojects:
 * [PiGPIO (Servo PWM Library)](http://abyz.me.uk/rpi/pigpio/pigpiod.html)
 * [HamLib (GPredict Command Library)](http://hamlib.sourceforge.net/manuals/1.2.15/index.html)
 * [HamLib on RPi](https://kb9mwr.blogspot.com/2013/04/raspberry-pi-web-based-rig-control.html)
-* [Servo Characterization](cmd-n-ctl/Sweep/Sweep.ino)
+* [Servo Characterization](cmd-n-ctl/servo-tests)
 
 ## Design Decisions
 ### Antenna
@@ -41,9 +50,9 @@ This is a farm-to-table amateur radio project composed of 3 major subprojects:
 * Homebrew dipole antenna base made from PVC and coat hangers
 	* Coat hanger antennas are aesthetic
 	* Cheap COTS parts Increase accessiblity
-	
+
 ### Controller
-* Custom-made servo brackets (sized for [SainSmart SR319](https://www.sainsmart.com/products/copy-of-all-purpose-digital-servo-sr318?nosto=customers-also-bought)) 
+* Custom-made servo brackets (sized for [SainSmart SR319](https://www.sainsmart.com/products/copy-of-all-purpose-digital-servo-sr318?nosto=customers-also-bought))
 	* Had two of those servos on-hand
 	* SainSmart doesn't really sell  individual brackets  ($$)
 * Custom platform stand
@@ -61,6 +70,7 @@ This is a farm-to-table amateur radio project composed of 3 major subprojects:
 	* PWM way less noisy and more reliable than RPi-GPIO or wiringPi
 	* Both Python and C interfaces
 
+<<<<<<< HEAD
 ## Software/Retailer Links
 * [GPredict](http://gpredict.oz9aec.net/) - Satellite tracking and antenna actuation software
 * [PiGPIO](http://abyz.me.uk/rpi/pigpio/index.html) - Provides hardware-timed GPIO control on Raspberry Pi
@@ -71,5 +81,9 @@ This is a farm-to-table amateur radio project composed of 3 major subprojects:
 ## Author
 Marion Anderson - [lmander42](https://github.com/lmander42)
 
+=======
+## Author
+Marion Anderson - [lmander42](https://github.com/lmander42)
+>>>>>>> 2e69a758b8840ecd2e68871d49223b60e8eb61d8
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) file for details
