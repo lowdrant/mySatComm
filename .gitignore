@@ -1,2 +1,6 @@
 # Solidworks Backup Files
 *~$*\.SLD*
+
+# Python compuled files
+*.pyc
+*/__pycache__/*
