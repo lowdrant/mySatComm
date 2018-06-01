@@ -66,8 +66,8 @@ class SainSmart(object):
         self.pi = pigpio.pi()
 
         self.pin = pin
-        self.pi.set_mode(self.pin, pigpio.OUTPUT)       # use self.pin for implicit
-        self.pi.set_PWM_frequency(self.pin, self.freq)  # assignment validation
+        self.pi.set_mode(self.pin, pigpio.OUTPUT)
+        self.pi.set_PWM_frequency(self.pin, self.freq)
 
         self.attached = True  # if no errors, servo should now be attached
 
@@ -102,7 +102,7 @@ class SainSmart(object):
     def read(self):
         """Reads current servo position
 
-        Really just returns the las value written to the servo. This is the only
+        Just returns the last value written to the servo. This is the only
         option, as SainSmart servos work in open loop control and cannot
         send back data.
 

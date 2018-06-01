@@ -34,4 +34,3 @@ if __name__ == '__main__':
     # Releasing resources and exiting
     myServo.detach()
     exit(0)
-
