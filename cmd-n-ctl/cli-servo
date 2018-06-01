@@ -1,0 +1,70 @@
+#! /usr/bin/env python3
+"""
+Command Line Interface for controlling a single servo 
+
+author: Marion Anderson
+date:   2018-05-31
+file:   cli-servo
+"""
+from __future__ import print_function, absolute_import
+from sainsmart import SainSmart
+
+from sys import argv, exit
+from os import system
+
+
+def helpmsg():
+    """Displays CLI help message
+    
+    Define helpstr for print internally because this function is called a
+    maximum of once. This reduces steps taken by actual script interface.
+    """
+    helpstr = 'usage: cli-servo servo_pin [servo_position]\n'
+    helpstr += '    servo_position: Move servo to position in microseconds'
+    helpstr += ' (500-2500)\n     '
+    helpstr += '               (defaults to a continous command interface)' 
+    print(helpstr)
+
+myServo = SainSmart()  # instantiate servo
+
+if __name__ == '__main__':
+    # Initial Setup
+    #system('sudo pigpiod &>/dev/null')  # run daemon
+    go = False  # avoid real-time interface by default
+
+    # Help Message Display
+    if len(argv) < 2 or argv[1] == '-h' or argv[1] == '--help':
+        helpmsg()
+        exit(0)
+    
+    # Move to single position
+    if len(argv) == 3:
+        myServo.attach(int(argv[1]))
+        myServo.write(float(argv[2]))
+    # Real-time interface
+    elif len(argv) == 2:
+        myServo.attach(int(argv[1]))
+        go = True
+
+    # Real-Time Interface 
+    while go:
+        us = input('Please enter a position value (us): ')
+
+        # exit instruction
+        if us == 'exit' or us is None or us == '':
+            go = False
+            break
+
+        # writing servo
+        try:
+            us = float(us)
+            myServo.write(us)
+            print('Servo moved to {} microseconds!'.format(us))
+        except:
+            print('Bad Input: enter a float between 500 and 2500')
+
+    # Releasing Resources
+    myServo.detach()
+    #system('sudo killall pigpiod &> /dev/null')
+    exit(0)
+
