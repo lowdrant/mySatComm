@@ -1,9 +1,8 @@
 # mySatComm
-Homebrew groundstation for receiving data from satellites. Servos are controlled
-via Raspberry Pi, and DSP is handled through the GNU Radio and GPredict programs.
+Homebrew groundstation for receiving data from satellites. Servos are controlled via Raspberry Pi, and DSP is handled through the GNU Radio and GPredict programs.
 
 ## Installation
-Run [install.sh](install.sh) to install all dependencies on Raspian
+Clone this repo to your Raspberry Pi and run [install.sh](install.sh) to install all dependencies. Currently only works on Debian-based distros.
 
 ## Software/Retailer Links
 * [GPredict](http://gpredict.oz9aec.net/) - Satellite tracking and antenna actuation software
