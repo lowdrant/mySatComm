@@ -8,3 +8,9 @@
 
 # vim usage files
 *.swp
+
+# generic virtualenv file
+env/*
+
+# my preferred venv files
+satcomm/*
