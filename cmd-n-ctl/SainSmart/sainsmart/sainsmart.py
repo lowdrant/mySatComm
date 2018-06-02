@@ -11,21 +11,18 @@ from time import sleep
 import pigpio
 
 
-class SainSmartException(Exception):
-    """SainSmart class generic exception"""
+class SainSmartClassException(Exception):
+    """Provide exceptions for SainSmart class"""
     pass
 
 
 class SainSmart(object):
-
     """Interface to SainSmart 318 and 319 servomotors using PiGPIO.
-
-    Inherits pigpio.pi class to allow access to other methods
 
     See this link for PiGPIO documentation:
     http://abyz.me.uk/rpi/pigpio/index.html
 
-    And this link for SainSmart319 documentation:
+    See this link for SainSmart319 documentation:
     https://www.sainsmart.com/collections/robotics-cnc/products/copy-of-all-purpose-digital-servo-sr318
     """
 
@@ -51,7 +48,7 @@ class SainSmart(object):
         if freq >= 50 and freq <= 330:
             pass
         else:
-            raise SainSmartException('Operating frequency out of range.')
+            raise SainSmartClassException('Operating frequency out of range.')
 
         self.freq = freq
         self.min = 500   # minimum control pulsewidth in microseconds
@@ -86,11 +83,11 @@ class SainSmart(object):
 
         # validate position (limits from SainSmart documentation)
         if microseconds < 499 or microseconds > 2501:
-            raise SainSmartException('Servo position out of range')
+            raise SainSmartClassException('Servo position out of range')
 
         # make sure servo is attached
         if not self.attached:
-            raise SainSmartException('Servo is not attached')
+            raise SainSmartClassException('Servo is not attached')
 
         # set positon
         self.pi.set_servo_pulsewidth(self.pin, microseconds)
