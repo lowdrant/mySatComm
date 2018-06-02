@@ -5,3 +5,6 @@
 *.pyc
 */__pycache__/*
 *.egg-info*
+
+# vim usage files
+*.swp
