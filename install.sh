@@ -1,37 +1,50 @@
 #! /bin/bash
 # Install script for cmd-n-ctl part of mySatComm github project
 # Intended to be run on Raspberry Pi system
+#
+# You may want to run this in a virtual environment
+# I may implement venvs in this repo at some point, but no promises
+
+function errmsg() {
+    echo -n "Something went wrong!"
+    echo " Make sure your system is set up properly"
+    exit 1
+}
 
 printf "Running mySatComm/install.sh...\n\n"
 
 # pip for python3
-printf "Checking for pip3...\n"
-dpkg -l python3-pip
+echo "Checking for pip3..."
+dpkg -l python3-pip &>/dev/null
 if [ $? ]; then
-    printf "pip3 installed, moving on..."
+    echo "pip3 installed, moving on..."
 else
-    printf "Installing pip3..."
+    echo "Installing pip3..."
     sudo apt install python3-pip
+    if ! [ $? ]; then
+        errmsg
+    fi
 fi
 
 # pigpio
-printf "Checking for pigpio...\n"
-dpkg -l pigpio
+printf "\nChecking for pigpio..."
+dpkg -l pigpio &>/dev/null
 if [ $? ]; then
-    printf "pigpio installed, moving on..."
+    echo "pigpio installed, moving on..."
 else
-    printf "Installing pigpio..."
+    echo "Installing pigpio..."
     sudo apt install pigpio
+    if ! [ $? ]; then
+        errmsg
+    fi
 fi
 
-# pigpio for python
-printf "Checking for python3-pigpio...\n"
-dpkg -l pigpio
-if [ $? ]; then
-    printf "python3-pigpio installed, moving on..."
-else
-    printf "Installing python3-pigpio..."
-    sudo apt install python3-pigpio
+# install SainSmart class and exception
+printf "\nInstalling sainsmart...\n"
+pip3 install -e cmd-n-ctl/sainsmart-lib
+if ! [ $? ]; then
+    errmsg
 fi
 
 printf "Installation Complete\n"
+exit 0

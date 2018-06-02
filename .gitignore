@@ -1,6 +1,7 @@
 # Solidworks Backup Files
 *~$*\.SLD*
 
-# Python compuled files
+# Python compiled files
 *.pyc
 */__pycache__/*
+*.egg-info*

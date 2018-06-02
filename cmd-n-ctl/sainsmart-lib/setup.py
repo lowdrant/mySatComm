@@ -15,8 +15,8 @@ setup(
     url='http://github.com/lmander42/mySatComm/',
     author='lmander42',
     license='MIT',
-    packages=['sainsmart'],
-    install_requires=['python3-gpio'],
+    py_modules=['sainsmart'],
+    install_requires=['pigpio'],
     classifiers=(
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
