@@ -70,7 +70,6 @@ This is a farm-to-table amateur radio project composed of 3 major subprojects:
 	* PWM way less noisy and more reliable than RPi-GPIO or wiringPi
 	* Both Python and C interfaces
 
-<<<<<<< HEAD
 ## Software/Retailer Links
 * [GPredict](http://gpredict.oz9aec.net/) - Satellite tracking and antenna actuation software
 * [PiGPIO](http://abyz.me.uk/rpi/pigpio/index.html) - Provides hardware-timed GPIO control on Raspberry Pi
