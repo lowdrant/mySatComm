@@ -75,15 +75,11 @@ This is a farm-to-table amateur radio project composed of 3 major subprojects:
 * [GPredict](http://gpredict.oz9aec.net/) - Satellite tracking and antenna actuation software
 * [PiGPIO](http://abyz.me.uk/rpi/pigpio/index.html) - Provides hardware-timed GPIO control on Raspberry Pi
 * [Raspberry Pi](https://www.raspberrypi.org/) - Hobbyist-oriented single-board computer
-* [SolidWorks](https://www.solidworks.com/) - CAD software 
+* [SolidWorks](https://www.solidworks.com/) - CAD software
 * [SainSmart](https://www.com.sainsmart) - Robotic components manufacturer
 
 ## Author
 Marion Anderson - [lmander42](https://github.com/lmander42)
 
-=======
-## Author
-Marion Anderson - [lmander42](https://github.com/lmander42)
->>>>>>> 2e69a758b8840ecd2e68871d49223b60e8eb61d8
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) file for details
