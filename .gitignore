@@ -10,7 +10,7 @@
 *.swp
 
 # generic virtualenv file
-env/*
+*/env/*
 
 # my preferred venv files
 satcomm/*
