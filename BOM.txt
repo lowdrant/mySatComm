@@ -1,5 +1,59 @@
-PVC Pipe       | Size Pending
-Coat hangers | Design pending
-SDR               | I used the NooElec NESDR Mini
-Arduino MCU | Uno should do
-2x Servomotors | I used Sain Smart SR319
+Control Components:
+-------------------
+2x SainSmart SR319 Servomotors
+https://www.sainsmart.com/collections/robotics-cnc/products/copy-of-all-purpose-digital-servo-sr318
+
+1x Raspberry Pi Model 3
+https://smile.amazon.com/CanaKit-Raspberry-Power-Supply-Listed/dp/B07BC6WH7V/ref=sr_1_3?s=pc&ie=UTF8&qid=1528080387&sr=1-3&keywords=raspberry+pi+3+b%2B
+
+1x Breadboard (Any will do)
+https://smile.amazon.com/Tektrum-Externally-Solderless-Tie-Points-Proto-Typing/dp/B078FZXL1D/ref=sr_1_2?s=electronics&ie=UTF8&qid=1528080494&sr=1-2&keywords=big+breadboard
+
+10x ech. Jumper Wires (m-m and m-f)
+https://smile.amazon.com/Haitronic-Multicolored-Breadboard-Arduino-raspberry/dp/B01LZF1ZSZ/ref=sr_1_1?s=electronics&ie=UTF8&qid=1528080443&sr=1-1&keywords=jumper+wires
+
+
+Antenna Components:
+-------------------
+Min. 2' PVC  (1/2" Diameter)
+See mechanical/antenna/dipole for fabrication specs
+
+Min. 15' Conductive Wire (Coat hangers work for this as well)
+(Dipole wires cut to 1.7' length)
+
+Min. 3' M-M Coax Cable
+https://smile.amazon.com/Cable-Matters-3-Pack-Shielded-Coaxial/dp/B00LETAIAI/ref=sr_1_3?s=audio-video-accessories&ie=UTF8&qid=1528080847&sr=1-3&keywords=coax+cable
+
+1x F-Wire Antenna Matching Transformer
+https://smile.amazon.com/Comidox-Antenna-Adapter-Matching-Transformer/dp/B0785WDZW5/ref=sr_1_14?s=electronics&ie=UTF8&qid=1528081016&sr=1-14&keywords=coax+to+wire
+
+1x M-F BNC to Coax Adapter
+https://smile.amazon.com/Eightnoo-Adapter-Connector-Coupler-adapters/dp/B01LW369ZW/ref=sr_1_3?ie=UTF8&qid=1528080928&sr=8-3&keywords=coax+to+bnc
+
+1x F-M BNC to MCX
+https://smile.amazon.com/gp/product/B00CSCTU40/ref=oh_aui_detailpage_o00_s00?ie=UTF8&psc=1
+
+Radio Components:
+-----------------
+1x NooElec SDR Mini
+https://www.nooelec.com/store/sdr/sdr-receivers/nesdr-mini2-rtl2832u-r820t2.html]
+
+
+Software:
+---------
+GNU Radio Companion
+https://www.gnuradio.org/
+
+GPredict
+http://gpredict.oz9aec.net/
+
+Some CAD software with STL read/export capability
+https://www.freecadweb.org/
+https://www.solidworks.com/
+https://www.autodesk.com/products/inventor/overview
+
+Recommended Tools:
+Hand Saw
+Soldering Iron
+Drill
+3D Printer (for easier bracket fabrication)

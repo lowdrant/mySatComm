@@ -4,13 +4,6 @@ Homebrew groundstation for receiving data from satellites. Servos are controlled
 ## Installation
 Clone this repo to your Raspberry Pi and run [install.sh](install.sh) to install all dependencies. Currently only works on Debian-based distros.
 
-## Software/Retailer Links
-* [GPredict](http://gpredict.oz9aec.net/) - Satellite tracking and antenna actuation software
-* [PiGPIO](http://abyz.me.uk/rpi/pigpio/index.html) - Provides hardware-timed GPIO control on Raspberry Pi
-* [Raspberry Pi](https://www.raspberrypi.org/) - Hobbyist-oriented single-board computer
-* [SolidWorks](https://www.solidworks.com/) - CAD software
-* [SainSmart](https://www.com.sainsmart) - Robotic components manufacturer
-
 ## Project Overview
 This is a farm-to-table amateur radio project composed of 3 major subprojects:
 
@@ -34,13 +27,20 @@ This is a farm-to-table amateur radio project composed of 3 major subprojects:
 ### Mechanical Quick Reference
 * [Controller](mechanical/drawings/controller.PDF)
 * [Dipole ](mechanical/drawings/dipole.PDF)
-* [Materials](BOM.txt)
+* [Materials and Tools](BOM.txt)
 
 ### Software Quick Reference
 * [PiGPIO (Servo PWM Library)](http://abyz.me.uk/rpi/pigpio/pigpiod.html)
 * [HamLib (GPredict Command Library)](http://hamlib.sourceforge.net/manuals/1.2.15/index.html)
 * [HamLib on RPi](https://kb9mwr.blogspot.com/2013/04/raspberry-pi-web-based-rig-control.html)
 * [Servo Characterization](cmd-n-ctl/servo-tests)
+
+### Software/Retailer Links
+* [GPredict](http://gpredict.oz9aec.net/) - Satellite tracking and antenna actuation software
+* [PiGPIO](http://abyz.me.uk/rpi/pigpio/index.html) - Provides hardware-timed GPIO control on Raspberry Pi
+* [Raspberry Pi](https://www.raspberrypi.org/) - Hobbyist-oriented single-board computer
+* [SolidWorks](https://www.solidworks.com/) - CAD software
+* [SainSmart](https://www.com.sainsmart) - Robotic components manufacturer
 
 ## Design Decisions
 ### Antenna
