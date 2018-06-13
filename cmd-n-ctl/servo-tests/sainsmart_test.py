@@ -2,6 +2,8 @@
 """
 A script for testing the SainSmart class servo interface and timing.
 
+The servo should be connected to pin 18. Otherwise change line 22 of this file.
+
 author: Marion Anderson
 date:   2018-05-30
 file:   sainsmart_test.py

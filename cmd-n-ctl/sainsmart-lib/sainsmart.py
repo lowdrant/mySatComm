@@ -11,6 +11,7 @@ from time import sleep
 import pigpio
 
 
+# TODO: Allow attachment to pin at initialization
 class SainSmartClassException(Exception):
     """Provide exceptions for SainSmart class"""
     pass
