@@ -4,7 +4,6 @@
 
 # Script Setup
 # ============
-set -o errexit
 set -o pipefail
 function errmsg() {
   echo -n "Something went wrong!"
@@ -40,24 +39,25 @@ elif [ $# -ne 0 ]; then
   helpmsg
   exit 1
 fi
+echo "Running cmd-n-ctl/uninstall.sh"
 
 # Removing python packages
 # ------------------------
 # activate virtualenv
 source satcomm/bin/activate
-echo "Virtual environment activated..."
+echo; echo "Virtual environment activated..."
 echo "Removing sainsmart-lib..."
 pip3 uninstall sainsmart; errcheck; echo "sainsmart-lib uninstalled!"
-echo "Removing pyserial..."
+echo; echo "Removing pyserial..."
 pip3 uninstall pyserial; errcheck; echo "pyserial uninstalled!"
 
 # Remove other packages as well
 # -----------------------------
-if [ $1 -eq "--all" ]; then
+if [ "$1" = "--all" ]; then
   echo "--all flag selected. Waiting 5 seconds in case of error"
   sleep 5
-  sudo apt remove libhamlib-doc libhamlib-dev libhamlib-utils pigpio pip3 python3-venv
+  sudo apt remove libhamlib-doc libhamlib-dev libhamlib-utils pigpio pip3 python3-venv --purge
 fi
 
-echo "Removal Complete!"
+echo; echo "Removal Complete!"
 exit 0
