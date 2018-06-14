@@ -5,27 +5,7 @@
 
 # Script Setup
 # ============
-set -o errexit
-set -o pipefail
-
-function errmsg() {
-    echo -n "Something went wrong!"
-    echo " Make sure your system is set up properly"
-}
-
-function helpmsg() {
-    echo "usage: install.sh [--venv]"
-    echo "Installs antenna controller libraries and scripts"
-    printf "\n  --venv       Install python libraries"
-    echo " in a virtual environment"
-}
-
-function errcheck() {
-  if ! [ $? ]; then
-    errmsg
-    exit 1
-  fi
-}
+set -o errext -o pipefail
 
 # Script Execution
 # ================
@@ -34,77 +14,49 @@ echo "Running cmd-n-ctl install.sh"
 # Install python3
 # ---------------
 echo
-echo "Checking for python3"
-dpkg -l python3 &> /dev/null
-if [ $? ]; then
-  echo "python3 already installed, moving on"
-else
-  sudo apt install python3 &> /dev/null
-  errcheck; echo "python3 installed!"
-fi
+echo "Checking for python3..."
+sudo apt install python3
 
 # Install pip3
 # ------------
 echo
 echo "Checking for pip3..."
-dpkg -l python3-pip &> /dev/null
-if [ $? ]; then
-  echo "pip3 already installed, moving on"
-else
-  sudo apt install python3-pip &> /dev/null
-  errcheck; echo "pip3 installed!"
-fi
+sudo apt install python3-pip
 
 # Install  hamlib
 # ---------------
 echo
 echo "Checking for hamlib"
-dpkg -l libhamlib-doc libhamlib-dev libhamlib-utils &> /dev/null
-if [ $? ]; then
-  echo "hamlib alreading installed, moving on"
-else
-  sudo apt install libhamlib-doc libhamlib-dev libhamlib-utils &> /dev/null
-  errcheck; echo "hamlib installed!"
-fi
+sudo apt install libhamlib-doc libhamlib-dev libhamlib-utils
 
 # Install pigpio daemon
 # ---------------------
 echo
 echo "Checking for pigpio daemon..."
-dpkg -l pigpio &> /dev/null
-if [ $? ]; then
-  echo "pigpio already installed, moving on"
-else
-  sudo apt install pigpio &> /dev/null
-  errcheck
-  echo "pigpio installed!"
-fi
+sudo apt install pigpio
 
 # Install & activate virtualenv
 # -----------------------------
 echo
 echo "Checking for virtualenv..."
-dpkg -l python3-virtualenv &> /dev/null
-if [ $? ]; then
-  echo "virtualenv already installed, moving on"
-else
-  sudo apt install python3-virtualenv
-  errcheck; echo "virtualenv installed!"
-fi
+sudo pip3 install virtualenv
+
 # activating virtualenv
-echo "Creating virtual environment..."
-python3 -m venv satcomm
+if ! [ -e satcomm/bin/activate ]; then
+  echo; echo "Creating virtual environment..."
+  python3 -m venv satcomm
+fi
 source satcomm/bin/activate
 errcheck
 echo "Virtual environment activated!"
-echo "Installing python packages..."
+echo; echo "Installing python packages..."
 
 # Install python packages
 # -----------------------
 echo "Installing sainsmart-lib..."
-pip3 install -e sainsmart-lib/; errcheck
-echo "Installing pyserial..."
-pip3 install pyserial; errcheck
+pip3 install -e sainsmart-lib/ --no-cache-dir; errcheck
+echo; echo "Installing pyserial..."
+pip3 install pyserial --no-cache-dir; errcheck
 
 # Cleanup
 # -------
