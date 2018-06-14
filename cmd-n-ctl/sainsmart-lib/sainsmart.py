@@ -27,40 +27,47 @@ class SainSmart(object):
     https://www.sainsmart.com/collections/robotics-cnc/products/copy-of-all-purpose-digital-servo-sr318
     """
 
-    def __init__(self, freq=50):
+    def __init__(self, freq=50, pin=None):
         """Creates basic instance of SainSmart object.
 
+        :param freq: Frequency (Hz) of servo operation (Default 50)
+        :param pin:  Broadcom pin number servo is attached to (Default None)
+        :type freq:  float
+        :type pin:   int
+
+        :returns: Initialized SainSmart instance
+        :rtype:   Class SainSmart
+
+        .. note::
         The defaults are based on the SainSmart319 servo, accessible via the
         link in the class docstring. See Raspberry Pi and SainSmart
         documentation for acceptable parameter values for you equipment.
 
-        You may notice that pigpio.pi.__init inheritance is not called here.
-        This is because the pigpio.pi class reserves resources from a daemon.
-        It is called in SainSmart.attach(), where it is more clear that the
-        resources are about to be utilized.
-
-        Args:
-            freq (int, default=50): Frequency (Hz) of servo operation
-
-        Returns:
-            SainSmart object instance
+        .. note::
+        Servos are not attached by default. If pin is not specified at
+        initialization, SainSmart.attach() must be called before controlling
+        servo. This is to minimize resource consumption before actual usage.
         """
         # validate frequency
         if freq >= 50 and freq <= 330:
             pass
         else:
-            raise SainSmartClassException('Operating frequency out of range.')
+            raise SainSmartClassException('Operating frequency out of range'
+                                          + ' (50-330).')
 
         self.freq = freq
         self.min = 500   # minimum control pulsewidth in microseconds
         self.max = 2500  # maximum control pulsewidth in microseconds
         self.attached = False  # servo attachment flag
 
+        if pin is not None:
+            self.attach(pin)
+
     def attach(self, pin):
         """Initiates servo interface on a Broadcom numbered GPIO pin
 
-        Args:
-            pin (int): The pin connected to the servo
+        :param pin: Broadcom pin number servo is attached to
+        :type pin:  int
         """
         self.pi = pigpio.pi()
 
@@ -78,8 +85,8 @@ class SainSmart(object):
     def write(self, microseconds):
         """Moves servo to position given in microseconds
 
-        Args:
-            microseconds (int): Pulsewidth in microseconds
+        :param microseconds: Pulsewidth in microseconds (500-2500)
+        :type microseconds: int
         """
 
         # validate position (limits from SainSmart documentation)
@@ -101,12 +108,13 @@ class SainSmart(object):
     def read(self):
         """Reads current servo position
 
-        Just returns the last value written to the servo. This is the only
+        :returns: Current servo position in microseconds
+        :rtype:  int
+
+        .. note::
+        This just returns the last value written to the servo. This is the only
         option, as SainSmart servos work in open loop control and cannot
         send back data.
-
-        Returns:
-            (int): Current servo position in microseconds
         """
         return self.position
 
