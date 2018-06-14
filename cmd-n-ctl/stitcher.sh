@@ -9,12 +9,28 @@
 # date:   2018-06-12
 # file:   stitcher.sh
 
-# run servo control daemon
-sudo pigpiod
+# servo control daemon
+if [ $(ps aux | grep pigpiod | wc --lines) -gt 1 ]
+then
+  echo "pigpiod daemon already running!"
+else
+  sudo pigpiod
+fi
 
 # stitch ttyS10 and ttyS11 together
-sudo socat PTY,link=/dev/ttyS10 PTY,link=/dev/ttyS11 &
+if [ $(ps aux | grep socat | wc --lines) -gt 1 ]
+then
+  echo "socat already running!"
+else
+  sudo socat PTY,link=/dev/ttyS10 PTY,link=/dev/ttyS11 &
+fi
+
 
 # rotator control
 # use EasyCommm I protocol for simplicity
-sudo rotctld -m 201 -T 10.0.0.117 -vvvvv -r /dev/ttyS10 &> rotlog.log &
+if [ $(ps aux | grep rotctld | wc --lines) -gt 1 ]
+then
+  echo "rotctld already running!"
+else
+  sudo rotctld -m 201 -T 10.0.0.117 -vvvvv -r /dev/ttyS10 &> rotlog.log &
+fi
