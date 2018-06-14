@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#! /home/pi/mySatComm/satcomm/bin/python3.5
 """
 Experimental interface script for hamlibself.
 
@@ -8,34 +8,36 @@ author: Marion Anderson
 date:   2018-06-12
 file:   interface.py
 """
-from time import sleep
+from __future__ import print_function, absolute_import
 from sainsmart import SainSmart
 import serial
 
+"""
 # servo initialization
 azServo = SainSmart()
 azServo.attach(18)
 elServo = SainSmart()
 elServo.attach(20)
+"""
 
 # serial port initialization
-ser = serial.Serial('/dev/ttyS11', baudrate=38400, timeout=1)
+ser = serial.Serial(port='/dev/ttyS11', baudrate=38400, timeout=0.5)
 
 while True:
-    # get input
-    input = ser.readlines()
-    cmdstr = input[-1]  # get last instruction
-    print(input, cmdstr)
+    serdata = ser.readlines()
+    if len(serdata) < 1:
+        continue
 
     # parse
-    az, el = cmdstr.split(' ')[0:1]
+    cmdstr = serdata[-1].decode('utf-8')[0:-2]  # get last instruction
+    az, el = cmdstr.split(' ')[0:2]
     az = az[2:]  # fmt: AZxxx.x
     el = el[2:]  # fmt: EXxxx.x
 
     # execute
-    print('az =', az, 'el =', el)
-    # azServo.write(az)
-    # elServo.write(el)
     # TODO: Conver az-el coordinates to servo angles
-
-    sleep(0.5)  # wait half a second between readings
+    print('cmdstr =', cmdstr)
+    print('serdata =', serdata)
+    print('az =', az, 'el =', el)
+    print()
+    # no need for time.sleep() because readlines uses ser.timeout for delay
