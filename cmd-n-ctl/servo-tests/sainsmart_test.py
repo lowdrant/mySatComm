@@ -9,12 +9,10 @@ date:   2018-05-30
 file:   sainsmart_test.py
 """
 from __future__ import print_function, absolute_import
-from sainsmart import SainSmart
-
-from sys import exit
 from time import sleep
-
 from random import uniform
+
+from sainsmart import SainSmart
 
 myServo = SainSmart()
 

@@ -9,8 +9,8 @@ date:   2018-06-12
 file:   interface.py
 """
 from __future__ import print_function, absolute_import
-from sainsmart import SainSmart
 import serial
+from sainsmart import SainSmart
 
 # servos
 azServo = SainSmart()
