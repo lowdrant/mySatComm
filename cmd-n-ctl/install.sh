@@ -5,7 +5,7 @@
 
 # Script Setup
 # ============
-set -o errext -o pipefail
+set -o errexit -o pipefail
 
 # Script Execution
 # ================
@@ -26,8 +26,14 @@ sudo apt install python3-pip
 # Install  hamlib
 # ---------------
 echo
-echo "Checking for hamlib"
+echo "Checking for hamlib..."
 sudo apt install libhamlib-doc libhamlib-dev libhamlib-utils
+
+# Install socat
+# -------------
+echo
+echo "Checking for socat..."
+sudo apt install socat
 
 # Install pigpio daemon
 # ---------------------

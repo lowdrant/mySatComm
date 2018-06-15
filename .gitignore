@@ -1,16 +1,14 @@
-# Solidworks Backup Files
+# Temp files
 *~$*\.SLD*
+*.swp
 
 # Python compiled files
 *.pyc
-*/__pycache__/*
+/__pycache__/
 *.egg-info*
 
-# vim usage files
-*.swp
+# venv files directory
+*satcomm/
 
-# generic virtualenv file
-*/env/*
-
-# my preferred venv files
-*/satcomm/*
+# vscode settings
+.vscode/
