@@ -9,6 +9,8 @@
 # date:   2018-06-12
 # file:   unstitcher.sh
 
+set -o errexit -o pipefail
+
 # Helper function to get pid of satcomm BASH commands
 # takes one arg, the input string
 # usage: `get_pid "input str"``
@@ -18,23 +20,21 @@ get_pid() {
   pid=$(cut --delimiter=' ' --fields=2 <<< "$str")
 }
 
-# find & kill pigpiod daemon
-sudo kill $(get_pid "pigpiod")
-if ! [ $? ]
-then
-  echo 'Failed to kill pigpiod!'
-fi
+# Loop through process names
+declare -a proc_names=("pigpiod" "socat" "rotctld")
+for name in "${proc_names[@]}"; do
 
-# kill off concat'd terminals
-sudo kill $(get_pid "socat")
-if ! [ $? ]
-then
-  echo 'Failed to kill socat!'
-fi
+  # check if actually running
+  if ! [ $(ps aux | grep "$name" | wc --lines) -gt 1 ]; then
+    echo "$name isn't running?"
 
-# kill rotator control
-sudo kill $(get_pid "rotctld")
-if ! [ $? ]
-then
-  echo 'Failed to kill rotctld!'
-fi
+  # killing process
+  else
+    get_pid "$name"
+    sudo kill $pid
+    if [ $? ]; then; echo "$name killed!"
+    else; echo "Failed to kill $name !"; fi
+  fi
+done
+
+exit 0

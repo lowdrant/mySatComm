@@ -4,7 +4,7 @@
 
 # Script Setup
 # ============
-set -o pipefail
+set -o pipefail -o errexit
 function errmsg() {
   echo -n "Something went wrong!"
   echo " Make sure your system is set up properly"
@@ -27,6 +27,7 @@ function errcheck() {
 # ================
 # Notify user script is running
 # -----------------------------
+echo "Running cmd-n-ctl/uninstall.sh"
 if [ $# -gt 1 ]; then
   echo "Error: too many arguments"
   helpmsg
@@ -39,12 +40,12 @@ elif [ $# -ne 0 ]; then
   helpmsg
   exit 1
 fi
-echo "Running cmd-n-ctl/uninstall.sh"
+
 
 # Removing python packages
 # ------------------------
 # activate virtualenv
-source satcomm/bin/activate
+source /home/py/mySatComm/cmd-n-ctl/satcomm/bin/activate
 echo; echo "Virtual environment activated..."
 echo "Removing sainsmart-lib..."
 pip3 uninstall sainsmart; errcheck; echo "sainsmart-lib uninstalled!"
@@ -54,9 +55,15 @@ pip3 uninstall pyserial; errcheck; echo "pyserial uninstalled!"
 # Remove other packages as well
 # -----------------------------
 if [ "$1" = "--all" ]; then
-  echo "--all flag selected. Waiting 5 seconds in case of error"
-  sleep 5
-  sudo apt remove libhamlib-doc libhamlib-dev libhamlib-utils pigpio pip3 python3-venv --purge
+  echo "--all flag selected. This WILL uninstall python3 & pip."
+  echo -n "Continue? (y/n):"
+  read -n 1 goflag
+  if [goflag = 'y' ]; then
+    sudo apt remove libhamlib-doc libhamlib-dev libhamlib-utils pigpio pip3 python3-venv python3 socat --purge
+    echo 'All dependencies at system-level removed'
+  fi
+  echo 'Aborting...'
+  exit 0
 fi
 
 echo; echo "Removal Complete!"

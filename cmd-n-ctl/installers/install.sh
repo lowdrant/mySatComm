@@ -48,9 +48,9 @@ echo "Checking for virtualenv..."
 sudo pip3 install virtualenv
 
 # activating virtualenv
-if ! [ -e satcomm/bin/activate ]; then
+if ! [ -e /home/pi/mySatComm/cmd-n-ctl/satcomm/bin/activate ]; then
   echo; echo "Creating virtual environment..."
-  python3 -m venv satcomm
+  python3 -m venv /home/pi/mySatcomm/cmd-n-ctl/satcomm
 fi
 source satcomm/bin/activate
 errcheck
