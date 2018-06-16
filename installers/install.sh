@@ -63,6 +63,8 @@ echo "Installing sainsmart-lib..."
 pip3 install -e sainsmart-lib/ --no-cache-dir; errcheck
 echo; echo "Installing pyserial..."
 pip3 install pyserial --no-cache-dir; errcheck
+echo; echo "Installing click..."
+pip3 install click --no-cache-dir; errcheck
 
 # Cleanup
 # -------

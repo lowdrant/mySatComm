@@ -46,11 +46,13 @@ fi
 # ------------------------
 # activate virtualenv
 source /home/py/mySatComm/cmd-n-ctl/satcomm/bin/activate
-echo; echo "Virtual environment activated..."
+echo; echo "Virtual environment activated!"
 echo "Removing sainsmart-lib..."
 pip3 uninstall sainsmart; errcheck; echo "sainsmart-lib uninstalled!"
 echo; echo "Removing pyserial..."
 pip3 uninstall pyserial; errcheck; echo "pyserial uninstalled!"
+echo; echo "Removing click..."
+pip3 uninstall click; errcheck; echo "click uninstalled!"
 
 # Remove other packages as well
 # -----------------------------
