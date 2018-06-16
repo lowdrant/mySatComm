@@ -11,7 +11,7 @@ from time import sleep
 import pigpio
 
 
-# TODO: Allow attachment to pin at initialization
+# TODO: Make sure multiple SainSmart instances do work
 class SainSmartClassException(Exception):
     """Provide exceptions for SainSmart class"""
     pass
@@ -52,8 +52,8 @@ class SainSmart(object):
         if freq >= 50 and freq <= 330:
             pass
         else:
-            raise SainSmartClassException('Operating frequency out of range'
-                                          + ' (50-330).')
+            raise SainSmartClassException('Operating frequency out of range' +
+                                          ' (50-330).')
 
         self.freq = freq
         self.min = 500   # minimum control pulsewidth in microseconds
@@ -160,7 +160,8 @@ class SainSmart(object):
         Uses linear fit to convert degrees to microseconds
         """
         if deg > 180 or deg < 0:
-            raise SainSmartClassException('Degree values must be in range [0, 180]')
+            except_str = 'Degree values must be in range [0, 180]'
+            raise SainSmartClassException(except_str)
 
         m = (self.max - self.min) / 180
         b = self.min
@@ -183,9 +184,9 @@ class SainSmart(object):
         Uses linear fit to convert degrees to microseconds
         """
         if microseconds > self.max or microseconds < self.min:
-            exceptstr = ('Microseconds values must be in range'
-                         + [{}, {}]'.format(self.min, self.max)
-            raise SainSmartClassException(
+            exceptstr = ('Microseconds values must be in range' +
+                         '[{}, {}]'.format(self.min, self.max))
+            raise SainSmartClassException(exceptstr)
 
         m = 180 / (self.max - self.min)
         return m * (microseconds - self.min)
