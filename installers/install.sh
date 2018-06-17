@@ -48,29 +48,28 @@ echo "Checking for virtualenv..."
 sudo pip3 install virtualenv
 
 # activating virtualenv
-if ! [ -e /home/pi/mySatComm/cmd-n-ctl/satcomm/bin/activate ]; then
+if ! [ -e /home/$USER/.satcomm/bin/activate ]; then
   echo; echo "Creating virtual environment..."
-  python3 -m venv /home/pi/mySatcomm/cmd-n-ctl/satcomm
+  python3 -m venv /home/$USER/.satcomm
 fi
-source satcomm/bin/activate
-errcheck
+source /home/$USER/.satcomm/bin/activate
 echo "Virtual environment activated!"
 echo; echo "Installing python packages..."
 
 # Install python packages
 # -----------------------
 echo "Installing sainsmart-lib..."
-pip3 install -e sainsmart-lib/ --no-cache-dir; errcheck
+pip3 install -e ../cmd-n-ctl/sainsmart-lib/ --no-cache-dir
 echo; echo "Installing pyserial..."
-pip3 install pyserial --no-cache-dir; errcheck
+pip3 install pyserial --no-cache-dir
 echo; echo "Installing click..."
-pip3 install click --no-cache-dir; errcheck
+pip3 install click --no-cache-dir
 
 # Cleanup
 # -------
 deactivate
 echo
 echo "Installation Complete!"
-echo "Virtual environment stored in cmd-n-ctl/satcomm/bin/activate"
+echo "Virtual environment stored in /home/pi/.satcomm/bin/activate"
 
 exit 0

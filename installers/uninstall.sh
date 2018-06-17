@@ -5,10 +5,6 @@
 # Script Setup
 # ============
 set -o pipefail -o errexit
-function errmsg() {
-  echo -n "Something went wrong!"
-  echo " Make sure your system is set up properly"
-}
 
 function helpmsg() {
   echo "usage: uninstall.sh [--all]"
@@ -16,18 +12,13 @@ function helpmsg() {
   echo "  --all       Remove all packages, not just sainsmart-lib"
 }
 
-function errcheck() {
-  if ! [ $? ]; then
-    errmsg
-    exit 1
-  fi
-}
-
 # Script Execution
 # ================
 # Notify user script is running
 # -----------------------------
 echo "Running cmd-n-ctl/uninstall.sh"
+goflag="n"
+
 if [ $# -gt 1 ]; then
   echo "Error: too many arguments"
   helpmsg
@@ -35,37 +26,36 @@ if [ $# -gt 1 ]; then
 elif [ $# -eq 1 ] && [ $1 = "-h" ]; then
   helpmsg
   exit 0
+elif [ $# -eq 1 ] && [ $1 = '--all' ]; then
+  echo
+  echo -n "--all flag selected. This WILL uninstall ALL system dependencies,"
+  echo " including pip."
+  read -p "Continue? (y/n): " goflag
+  if ! [ "$goflag" = "y" ]; then
+    echo "Exiting"
+    exit 0
+  fi
 elif [ $# -ne 0 ]; then
   echo "Error: bad argument"
   helpmsg
   exit 1
 fi
 
-
 # Removing python packages
 # ------------------------
-# activate virtualenv
-source /home/py/mySatComm/cmd-n-ctl/satcomm/bin/activate
-echo; echo "Virtual environment activated!"
-echo "Removing sainsmart-lib..."
-pip3 uninstall sainsmart; errcheck; echo "sainsmart-lib uninstalled!"
-echo; echo "Removing pyserial..."
-pip3 uninstall pyserial; errcheck; echo "pyserial uninstalled!"
-echo; echo "Removing click..."
-pip3 uninstall click; errcheck; echo "click uninstalled!"
+source /home/$USER/.satcomm/bin/activate
+echo; echo "Virtual environment activated"
+pip3 uninstall "sainsmart" --yes
+pip3 uninstall "pyserial" --yes
+pip3 uninstall "click" --yes
+deactivate
+rm -rf /home/$USER/.satcomm
 
 # Remove other packages as well
 # -----------------------------
-if [ "$1" = "--all" ]; then
-  echo "--all flag selected. This WILL uninstall python3 & pip."
-  echo -n "Continue? (y/n):"
-  read -n 1 goflag
-  if [goflag = 'y' ]; then
-    sudo apt remove libhamlib-doc libhamlib-dev libhamlib-utils pigpio pip3 python3-venv python3 socat --purge
-    echo 'All dependencies at system-level removed'
-  fi
-  echo 'Aborting...'
-  exit 0
+if [ "$goflag" = 'y' ]; then
+  sudo apt remove libhamlib-doc libhamlib-dev libhamlib-utils pigpio python3-pip python3-venv socat --purge
+  echo 'All dependencies at system-level removed'
 fi
 
 echo; echo "Removal Complete!"
