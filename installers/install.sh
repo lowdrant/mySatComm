@@ -58,8 +58,8 @@ echo; echo "Installing python packages..."
 
 # Install python packages
 # -----------------------
-echo "Installing sainsmart-lib..."
-pip3 install -e ../cmd-n-ctl/sainsmart-lib/ --no-cache-dir
+echo "Installing rotator-lib..."
+pip3 install -e ../cmd-n-ctl/rotator-lib/ --no-cache-dir
 echo; echo "Installing pyserial..."
 pip3 install pyserial --no-cache-dir
 echo; echo "Installing click..."
