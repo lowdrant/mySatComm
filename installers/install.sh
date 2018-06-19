@@ -65,6 +65,13 @@ pip3 install pyserial --no-cache-dir
 echo; echo "Installing click..."
 pip3 install click --no-cache-dir
 
+# Copy config files
+# -----------------
+echo; echo "Copying test scripts and config files to virtualenv"
+cp ../cmd-n-ctl/configs/rotator_config.json ~/.satcomm/include
+cp ../cmd-n-ctl/servo-tests/scanpwm ~/.satcomm/bin
+cp ../cmd-n-ctl/servo-tests/pwm-cli ~/.satcomm/bin
+
 # Cleanup
 # -------
 deactivate
