@@ -5,6 +5,7 @@ Package install script for Rotator servo class on Raspberry Pi
 Author: Marion Anderson
 Date:  2018-06-17
 """
+from __future__ import absolute_import
 
 from setuptools import setup
 

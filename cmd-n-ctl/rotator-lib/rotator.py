@@ -1,4 +1,3 @@
-#! /usr/bin/env python3
 """
 Object file for class interfacing with a 3-servo rotator
 
@@ -19,7 +18,8 @@ class RotatorClassException(Exception):
 
 
 class Rotator(object):
-    """Interface to 3-servo antenna rotator using PiGPIO PWM methods.
+    """
+    Interface to 3-servo antenna rotator using PiGPIO pwm methods.
 
     See this link for PiGPIO documentation:
     http://abyz.me.uk/rpi/pigpio/index.html
@@ -86,10 +86,34 @@ class Rotator(object):
         self.pi.stop()  # releases resources used by pigpio daemon
         self.attached = False
 
-    def calibrate(self):
-        """Moves rotator to default position, 0deg Az, 0deg El."""
+    def zero(self):
+        """Move rotator to default position, 0deg Az, 0deg El."""
 
         self.writeRotator(0, 0)
+
+    def calibrate(self):
+        """Calibrate rotator by sequentially moving it to
+        well-defined positions.
+        """
+
+        _ = input('Press enter to zero rotator: ')
+        self.zero()
+
+        # Azimuth calibration
+        for az in (90, 180, 270, 360):
+            input('Press enter to move to {0} degrees Azimuth: ')
+            self.writeRotator(az, 0)
+        print('Zeroing rotator, just in case...')
+        time.sleep(0.25)
+        self.zero()
+
+        # Elevation calibration
+        for el in (-10, 30, 45, 60, 90):
+            input('Press enter to move to {0} degrees Elevation: ')
+            self.writeRotator(0, el)
+        print('Zeroing rotator, just in case...')
+        time.sleep(0.25)
+        self.zero()
 
     def writeRotator(self, az, el):
         """Move rotator to an orientation given in degrees.
@@ -158,6 +182,7 @@ class Rotator(object):
         The mapping is a linear fit calculated using these two points:
         (0deg, 500us) and (180deg, 2500us).
         """
+
         if deg > 180 or deg < 0:
             except_str = 'Servo degree values must be in range [0, 180]'
             raise RotatorClassException(except_str)

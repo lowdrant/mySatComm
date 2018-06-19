@@ -6,17 +6,17 @@ Run stitcher.sh before this and unstitcher.sh after
 
 author: Marion Anderson
 date:   2018-06-12
-file:   interface.py
+file:   simple_interface.py
 """
 from __future__ import absolute_import, print_function
 
 import time
 
 import serial
-from sainsmart import SainSmart
-# Rotator setup
-azServo = SainSmart(18)
-# elServo = SainSmart(el)
+
+from rotator import Rotator
+
+
 ser = serial.Serial(port='/dev/ttyS11', baudrate=38400, timeout=0.5)
 
 # Reading input and Commanding servos
@@ -40,8 +40,7 @@ while True:
         print()
 
         for i in range(4):  # "smooth out" servo movement
-            azServo.write((i+1) * az_angle/4)
-            # elServo.write((i+1) * el_angle/4)
+            rot.writeRotator((i+1) * az_angle/4, (i+1 * el_angle/4))
             time.sleep(0.01)
 
     # if something goes wrong with the serial port, just exit
