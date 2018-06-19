@@ -1,0 +1,7 @@
+{
+    "pin_az1": 17,
+    "pin_az2": 27,
+    "pin_el": 22,
+    "port": "/dev/ttyS11",
+    "baudrate": 38400
+}
