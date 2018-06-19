@@ -1,6 +1,7 @@
-#! /home/pi/mySatComm/satcomm/bin/python3.5
+#! /usr/bin/env python3
 """
-Experimental CLI script for rotator control with hamlib.
+Experimental script for rotator control with hamlib.
+Reads from rotator_config.json
 
 Run stitcher.sh before this and unstitcher.sh after
 
@@ -10,31 +11,32 @@ file:   interface.py
 """
 from __future__ import absolute_import, print_function
 
+import json
 import os
 import time
 
-import click
-
 import serial
-from sainsmart import SainSmart
+
+import rotator
 
 
-@click.command()
-@click.option('--az', default=18, help='Pin for azimuth controller servo')
-@click.option('--el', default=17, help='Pin for elevation controller servo')
-# @click.option('--port', default='/dev/ttyS11',
-#              help='rotctld-output serial port')
-# @click.option('--baudrate', default=38400,
-#   help='Baudrate of rotcltd serial port')
-def main(az, el, port, baudrate):
-    """CLI entry point."""
+def main():
 
-    # Rotator setup
-    azServo = SainSmart(az)
-    elServo = SainSmart(el)
-    ser = serial.Serial(port=port, baudrate=baudrate, timeout=0.5)
+    # Parse config
+    with open('~/.satcomm/include/rotator_config.json') as f:
+        config = json.load(f)
+    pin_az1 = int(config['pin_az1'])
+    pin_az2 = int(config['pin_az2'])
+    pin_el = int(config['pin_el'])
+    baudrate = config['baudrate']
+    port = config['port']
 
-    # Reading input and Commanding servos
+    # Startup
+    rot = rotator.Rotator()
+    rot.attach(pin_az1, pin_az2, pin_el)
+    ser = serial.Serial(port=port, baudrate=baudrate, timeout=0.25)
+
+    # Execution
     while os.path.exists('~/satcomm_runflag_delete2stop'):
         try:
             serdata = ser.readlines()
@@ -55,8 +57,7 @@ def main(az, el, port, baudrate):
             print()
 
             for i in range(4):  # "smooth out" servo movement
-                azServo.write((i+1) * az_angle/4)
-                elServo.write((i+1) * el_angle/4)
+                rot.writeRotator()
                 time.sleep(0.01)
 
         # if something goes wrong with the serial port, just exit
@@ -65,3 +66,10 @@ def main(az, el, port, baudrate):
         except serial.SerialException:
             print('Serial port closed unexpectedly!')
             break
+
+    ser.close()
+    rot.detach()
+
+
+if __name__ == '__main__':
+    main()

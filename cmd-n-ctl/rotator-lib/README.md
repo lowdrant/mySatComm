@@ -39,7 +39,7 @@ writeRotator(int deg_az, int deg_el)W
 Sends position command to rotator in units of degrees.
 
 ```python
-read()
+readAz(), readEl()
 ```
 
-Returns the last input on write() call. This class does not allow for servo feedback, so thereturning  last command position is the only feasible read option.
+Returns input to the last writeRotator() call. This class does not allow for servo feedback, so returning  last command position is the only feasible read option.
