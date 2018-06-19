@@ -1,0 +1,48 @@
+#! /usr/bin/env python3
+"""
+CLI for automatically varying PWM on a specified pin
+
+author: Marion Anderson
+date:   2018-06-18
+file:   scanpwm
+"""
+from __future__ import absolute_import
+
+import time
+
+import click
+import pigpio
+
+
+@click.command()
+@click.argument('pin')
+def main(pin):
+    """Oscillates pwm on a Broadcom-numbered pin."""
+
+    # startup
+    pin = int(pin)
+    pi = pigpio.pi()
+    pi.set_servo_pulsewidth(pin, 0)
+
+    # control
+    go = True
+    while go:
+        for i in range(500, 3000, 500):
+            pi.set_servo_pulsewidth(pin, i)
+            click.echo("Wrote {1}us to pin {0}".format(pin, i))
+
+            val = input('Press enter to continue or type \'q\' to exit: ')
+            if val == 'q':
+                go = False
+                break
+
+    # shutdown
+    pi.stop()
+
+if __name__ == '__main__':
+    main(obj={})
+
+# stop the system pwm interface here
+# just in case it didn't get closed somewhere else
+pi = pigpio.pi()
+pi.stop()
