@@ -1,13 +1,19 @@
 Control Components:
 -------------------
-2x SainSmart SR319 Servomotors
+3x SainSmart SR319 Servomotors or Equivalent
 https://www.sainsmart.com/collections/robotics-cnc/products/copy-of-all-purpose-digital-servo-sr318
+https://smile.amazon.com/gp/product/B072KCZXNW/ref=oh_aui_detailpage_o00_s00?ie=UTF8&psc=1
 
 1x Raspberry Pi Model 3
 https://smile.amazon.com/CanaKit-Raspberry-Power-Supply-Listed/dp/B07BC6WH7V/ref=sr_1_3?s=pc&ie=UTF8&qid=1528080387&sr=1-3&keywords=raspberry+pi+3+b%2B
 
-1x Breadboard (Any will do)
-https://smile.amazon.com/Tektrum-Externally-Solderless-Tie-Points-Proto-Typing/dp/B078FZXL1D/ref=sr_1_2?s=electronics&ie=UTF8&qid=1528080494&sr=1-2&keywords=big+breadboard
+1x Breadboard/Solderboard Raspberry Pi Shield
+https://smile.amazon.com/Electronics-Salon-Prototype-Breakout-Raspberry-Breadboard/dp/B07BF8Z3HS/ref=sr_1_fkmr1_3?s=electronics&ie=UTF8&qid=1529453925&sr=1-3-fkmr1&keywords=raspberry+pi+solder+shied
+https://smile.amazon.com/Alchemy-Power-Pi-EzConnect-Raspberry-connector/dp/B01FE9EQ88/ref=pd_sim_147_3?_encoding=UTF8&pd_rd_i=B01FE9EQ88&pd_rd_r=86KQE2WA1MN76Z2TXF9V&pd_rd_w=NqZpm&pd_rd_wg=JkzAv&psc=1&refRID=86KQE2WA1MN76Z2TXF9V
+https://smile.amazon.com/dp/B013SPEXSI/ref=psdc_3015426011_t2_B01G8DPGWY
+
+AA Battery Holder - 7.4V
+https://smile.amazon.com/gp/product/B073XC52BG/ref=oh_aui_detailpage_o00_s00?ie=UTF8&psc=1
 
 10x ech. Jumper Wires (m-m and m-f)
 https://smile.amazon.com/Haitronic-Multicolored-Breadboard-Arduino-raspberry/dp/B01LZF1ZSZ/ref=sr_1_1?s=electronics&ie=UTF8&qid=1528080443&sr=1-1&keywords=jumper+wires
