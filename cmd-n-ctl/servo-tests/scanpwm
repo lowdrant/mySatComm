@@ -8,8 +8,6 @@ file:   scanpwm
 """
 from __future__ import absolute_import
 
-import time
-
 import click
 import pigpio
 
@@ -17,12 +15,12 @@ import pigpio
 @click.command()
 @click.argument('pin')
 def main(pin):
-    """Oscillates pwm on a Broadcom-numbered pin."""
+    """Scans pwm settings on a Broadcom-numbered pin."""
 
     # startup
     pin = int(pin)
     pi = pigpio.pi()
-    pi.set_servo_pulsewidth(pin, 0)
+    pi.set_servo_pulsewidth(pin, 0)  # force error if bad pin
 
     # control
     go = True
@@ -38,11 +36,3 @@ def main(pin):
 
     # shutdown
     pi.stop()
-
-if __name__ == '__main__':
-    main(obj={})
-
-# stop the system pwm interface here
-# just in case it didn't get closed somewhere else
-pi = pigpio.pi()
-pi.stop()

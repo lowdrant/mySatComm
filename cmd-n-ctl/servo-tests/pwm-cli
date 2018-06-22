@@ -53,9 +53,9 @@ def cont(ctx):
     """Enter continuous input mode."""
 
     # startup
-    click.echo('Entering continuous mode. Please do NOT use C-c to exit.\n'
-               + 'Enter \'quit\' or \'exit\' instead.\n(The script needs'
-               + 'to release resources before exiting)')
+    click.echo('Entering continuous mode. Please do NOT use C-c to exit.\n' +
+               'Enter \'quit\' or \'exit\' instead.\n(The script needs' +
+               'to release resources before exiting)')
     pin = ctx.obj['PIN']
     pi = pigpio.pi()
     pi.set_servo_pulsewidth(pin, 0)  # catch bad pin number before loop
@@ -77,12 +77,3 @@ def cont(ctx):
 
     # shutdown
     pi.stop()
-
-
-if __name__ == '__main__':
-    main(obj={})
-
-# stop the system pwm interface here
-# just in case it didn't get closed somewhere else
-pi = pigpio.pi()
-pi.stop()
