@@ -1,3 +1,4 @@
+#! /usr/bin/env python3
 """
 Object file for class interfacing with a 3-servo rotator
 
