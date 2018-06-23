@@ -97,15 +97,16 @@ class Rotator(object):
     def absoluteZero(self):
         """Source of truth zeroing function.
 
-        This function should not
+        Directly uses PiGPIO functions to avoid other system breakdowns in
+        case of emergency.
         """
 
         if not self.attached:
             raise RotatorClassException('Error: rotator not attached')
-        # Directly omamnd servos to 0 as a failure safeguard
+        # Directly command servos to 0 as a failure safeguard
         self.pi.set_servo_pulsewidth(self.pin_az1, 500)
         self.pi.set_servo_pulsewidth(self.pin_az2, 500)
-        self.pi.set_servo_pulsewidth(self.pin_el, 500)
+        self.pi.set_servo_pulsewidth(self.pin_el, 1500)  # el 0 is halfway
 
     def zero(self):
         """Move rotator to default position, 0deg Az, 0deg El."""
@@ -159,6 +160,7 @@ class Rotator(object):
 
         # Input processing
         az = az % 360  # constrain azimuth to 360 degrees
+        el += 90  # 0deg el is 90deg servo, b/c elevation goes up & down
         self.az = az
         self.el = el
 
