@@ -146,7 +146,7 @@ class Rotator(object):
         input('Calibration finished!\nPress enter to return to zero: ')
         self.zero()
 
-    def writeRotator(self, az, el):
+    def write(self, az, el):
         """Move rotator to an orientation given in degrees.
 
         :param az: Azimuth angle
@@ -233,17 +233,17 @@ class Rotator(object):
         """
 
         if degrees > 180 or degrees < 0:
-            exceptstr = 'Servo degree values must be in range [0, 180]'
+            exceptstr = 'Angle {0} out of range [0, 180]'.format(degrees)
             raise RotatorClassException(exceptstr)
 
         # Sending command signal
         us = 200 / 18.0 * degrees + 500  # eq: (2500-500)/(180-0) + 500
-        self.pi.write_servo_pulsewidth(pin, us)
+        self.pi.set_servo_pulsewidth(pin, us)
 
         # Unsetting command signal
         # (reduces risk of accidental servo response)
         time.sleep(0.2)  # experimentally determined delay
-        self.pi.write_servo_pulsewidth(pin, 0)
+        self.pi.set_servo_pulsewidth(pin, 0)
 
     # TODO: Test spline generation
     def _spline_trajectory(self, p0, pf, dt=0.25):

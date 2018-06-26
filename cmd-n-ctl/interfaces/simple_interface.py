@@ -1,4 +1,4 @@
-#! /home/pi/mySatComm/satcomm/bin/python3.5
+#! /usr/bin/env python3
 """
 Experimental CLI script for rotator control with hamlib.
 
@@ -10,13 +10,13 @@ file:   interface.py
 """
 from __future__ import absolute_import, print_function
 
-import time
-
 import serial
-from sainsmart import SainSmart
+
+from rotator import Rotator
+
 # Rotator setup
-azServo = SainSmart(18)
-# elServo = SainSmart(el)
+rot = Rotator()
+rot.attach(22, 23, 34)
 ser = serial.Serial(port='/dev/ttyS11', baudrate=38400, timeout=0.5)
 
 # Reading input and Commanding servos
@@ -37,12 +37,7 @@ while True:
         print('cmdstr =', cmdstr)
         print('serdata =', serdata)
         print('az =', az_angle, 'el =', el_angle)
-        print()
-
-        for i in range(4):  # "smooth out" servo movement
-            azServo.write((i+1) * az_angle/4)
-            # elServo.write((i+1) * el_angle/4)
-            time.sleep(0.01)
+        rot.write(az_angle, el_angle)
 
     # if something goes wrong with the serial port, just exit
     # user likely closed the port and
