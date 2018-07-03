@@ -1,6 +1,7 @@
-#! /home/pi/mySatComm/satcomm/bin/python3.5
+#! /usr/bin/env python3
 """
-Experimental interface script for hamlib.
+Experimental script for rotator control with hamlib.
+Reads from rotator_config.json
 
 Run stitcher.sh before this and unstitcher.sh after
 
@@ -8,38 +9,67 @@ author: Marion Anderson
 date:   2018-06-12
 file:   interface.py
 """
-from __future__ import print_function, absolute_import
+from __future__ import absolute_import, print_function
+
+import json
+import os
+import time
+
 import serial
-from sainsmart import SainSmart
 
-# servos
-azServo = SainSmart()
-azServo.attach(18)
-elServo = SainSmart()
-elServo.attach(20)
+import rotator
 
-# serial port initialization
-ser = serial.Serial(port='/dev/ttyS11', baudrate=38400, timeout=0.5)
 
-while True:
-    try:
-        serdata = ser.readlines()
-        if len(serdata) < 1:
-            continue
+def main():
 
-        # parse
-        cmdstr = serdata[-1].decode('utf-8')[0:-2]  # get last instruction
-        az, el = cmdstr.split(' ')[0:2]
-        az = az[2:]  # fmt: AZxxx.x
-        el = el[2:]  # fmt: EXxxx.x
+    # Parse config
+    with open('~/.satcomm/include/rotator_config.json') as f:
+        config = json.load(f)
+    pin_az1 = int(config['pin_az1'])
+    pin_az2 = int(config['pin_az2'])
+    pin_el = int(config['pin_el'])
+    baudrate = config['baudrate']
+    port = config['port']
 
-        # execute
-        # TODO: Conver az-el coordinates to servo angles
-        print('cmdstr =', cmdstr)
-        print('serdata =', serdata)
-        print('az =', az, 'el =', el)
-        print()
-        # no need for time.sleep() because readlines uses ser.timeout for delay
-    except serial.SerialException:
-        print('Serial port closed')
-        break
+    # Startup
+    rot = rotator.Rotator()
+    rot.attach(pin_az1, pin_az2, pin_el)
+    ser = serial.Serial(port=port, baudrate=baudrate, timeout=0.25)
+
+    # Execution
+    while os.path.exists('~/satcomm_runflag_delete2stop'):
+        try:
+            serdata = ser.readlines()
+            if len(serdata) < 1:  # don't try to parse a lack of commands
+                continue
+
+            # parse input
+            cmdstr = serdata[-1].decode('utf-8')[0:-2]  # get last instruction
+            az_str, el_str = cmdstr.split(' ')[0:2]
+            az_angle = float(az_str[2:])  # fmt: AZxxx.x
+            el_angle = float(el_str[2:])  # fmt: ELxxx.x
+
+            # execute
+            # TODO: Conver az-el coordinates to servo angles
+            print('cmdstr =', cmdstr)
+            print('serdata =', serdata)
+            print('az =', az_angle, 'el =', el_angle)
+            print()
+
+            for i in range(4):  # "smooth out" servo movement
+                rot.writeRotator()
+                time.sleep(0.01)
+
+        # if something goes wrong with the serial port, just exit
+        # user likely closed the port and
+        # there's probably no need for a long stack trace
+        except serial.SerialException:
+            print('Serial port closed unexpectedly!')
+            break
+
+    ser.close()
+    rot.detach()
+
+
+if __name__ == '__main__':
+    main()

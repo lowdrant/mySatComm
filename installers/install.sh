@@ -58,12 +58,18 @@ echo; echo "Installing python packages..."
 
 # Install python packages
 # -----------------------
-echo "Installing sainsmart-lib..."
-pip3 install -e ../cmd-n-ctl/sainsmart-lib/ --no-cache-dir
+echo "Installing rotator-lib..."
+pip3 install -e ../cmd-n-ctl/rotator-lib/ --no-cache-dir
 echo; echo "Installing pyserial..."
 pip3 install pyserial --no-cache-dir
 echo; echo "Installing click..."
 pip3 install click --no-cache-dir
+
+# Copy config files
+# -----------------
+echo; echo "Copying test scripts and config files to virtualenv"
+cp ../cmd-n-ctl/configs/rotator_config.json ~/.satcomm/include
+cp ../cmd-n-ctl/utils/* ~/.satcomm/bin
 
 # Cleanup
 # -------

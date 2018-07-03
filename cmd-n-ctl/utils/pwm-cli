@@ -1,0 +1,79 @@
+#!/usr/bin/env python3
+"""
+Test script for testing PWM on a specified pin.
+Provides CLI with two modes, single-write or continuous.
+
+author: Marion Anderson
+date:   2018-06-16
+file:   cli-pwm
+"""
+from __future__ import absolute_import
+
+import time
+
+import click
+import pigpio
+
+
+@click.group()
+@click.argument('pin')
+@click.pass_context
+def main(ctx, pin):
+    """Testing interface for pigpio PWM control.
+
+    Broadcom pin numbers must be used to specify pin.
+    """
+
+    ctx.obj['PIN'] = int(pin)  # save pin number to pass context
+
+
+@main.command()
+@click.argument('micros')
+@click.pass_context
+def write(ctx, micros):
+    """Set pwm output on PIN in microseconds."""
+
+    # startup
+    pin = ctx.obj['PIN']
+    micros = float(micros)
+    pi = pigpio.pi()
+
+    # control
+    pi.set_servo_pulsewidth(pin, micros)
+    time.sleep(0.2)  # experimentally determined delay
+    pi.set_servo_pulsewidth(pin, 0)
+
+    # shutdown
+    pi.stop()
+
+
+@main.command()
+@click.pass_context
+def cont(ctx):
+    """Enter continuous input mode."""
+
+    # startup
+    click.echo('Entering continuous mode. Please do NOT use C-c to exit.\n' +
+               'Enter \'quit\' or \'exit\' instead.\n(The script needs' +
+               'to release resources before exiting)')
+    pin = ctx.obj['PIN']
+    pi = pigpio.pi()
+    pi.set_servo_pulsewidth(pin, 0)  # catch bad pin number before loop
+
+    # control
+    go = True
+    while go:
+        try:  # don't crash on bad input
+            val = input('Please enter a pulsewidth: ')
+
+            if val in ('q', 'quit', 'exit'):  # exit condition
+                break
+            val = float(val)
+            pi.set_servo_pulsewidth(pin, val)
+
+        except (ValueError, pigpio.error):
+            errstr = 'Pulsewidth must be a float between 500 and 2500, or 0\n'
+            click.echo(errstr)
+
+    # shutdown
+    pi.stop()

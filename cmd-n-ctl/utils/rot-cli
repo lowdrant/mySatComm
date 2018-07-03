@@ -1,0 +1,51 @@
+#!/usr/bin/env python3
+"""
+Rotator testing utility
+
+Allows dynamic user input of rotator az and el angles in degrees with some
+mild error catching. Az1, Az2, and El servo pins are hardcoded to pins 27, 23,
+and 24, respecitvely.
+
+author: Marion Anderson
+date:   2018-06-25
+file:   rot-cli
+"""
+from __future__ import absolute_import, print_function
+
+from rotator import Rotator, RotatorClassException
+import click
+
+
+
+
+
+@click.command()
+def main():
+    """Test utility for 3-servo rotator setup.
+
+    Allows dynamic user input of rotator az and el angles in degrees with some
+    mild error catching. Az1, Az2, and El pins are hardcoded to pins 27, 23,
+    and 24, respecitvely.
+    """
+    # Rotator setup
+    rot = Rotator()
+    rot.attach(27, 23, 24)
+    print('rot-cli initialized!')
+
+    # Inputing & Commanding
+    while True:
+        az_str = input('Desired Az: ')
+        el_str = input('Desired El: ')
+
+        try:
+            # parse input
+            az_angle = int(az_str)
+            el_angle = int(el_str)
+
+            # execute
+            print('\nRecorded Az: ', az_angle, '\nRecorded El: ', el_angle)
+            rot.write(az_angle, el_angle)
+
+        except (ValueError, RotatorClassException):
+            print('Angles must be integer degree values.' +
+                  ' Elevation is constrained to [-90, 90]')

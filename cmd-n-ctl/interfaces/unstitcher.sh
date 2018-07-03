@@ -21,7 +21,7 @@ get_pid() {
 }
 
 # Loop through process names
-declare -a proc_names=("pigpiod" "socat" "rotctld")
+declare -a proc_names=("pigpiod" "socat" "rotctld")  # from stack overflow
 for name in "${proc_names[@]}"; do
 
   # check if actually running

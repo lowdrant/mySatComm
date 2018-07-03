@@ -16,7 +16,7 @@ This is a farm-to-table amateur radio project composed of 3 major subprojects:
 
 ## Installation
 
-Clone this repo to `/home/pi` on your Raspberry Pi drectory and run [install.sh](installers/install.sh). All Python dependencies will be installed in a virtual environment at `/home/pi/mySatComm/satcomm`.
+Clone this repo to your Raspberry Pi and run [install.sh](installers/install.sh). All Python dependencies will be installed in a virtual environment at `/home/$USER/.satcomm`
 
 To uninstall, run the corresponding [uninstall.sh](installers/uninstall.sh) script.
 

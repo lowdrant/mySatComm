@@ -45,7 +45,7 @@ fi
 # ------------------------
 source /home/$USER/.satcomm/bin/activate
 echo; echo "Virtual environment activated"
-pip3 uninstall "sainsmart" --yes
+pip3 uninstall "rotator" --yes
 pip3 uninstall "pyserial" --yes
 pip3 uninstall "click" --yes
 deactivate
