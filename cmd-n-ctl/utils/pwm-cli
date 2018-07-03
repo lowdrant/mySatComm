@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#!/usr/bin/env python3
 """
 Test script for testing PWM on a specified pin.
 Provides CLI with two modes, single-write or continuous.
@@ -21,7 +21,7 @@ import pigpio
 def main(ctx, pin):
     """Testing interface for pigpio PWM control.
 
-    Broadcom pin numbers must be used to specify pin
+    Broadcom pin numbers must be used to specify pin.
     """
 
     ctx.obj['PIN'] = int(pin)  # save pin number to pass context
@@ -72,8 +72,8 @@ def cont(ctx):
             pi.set_servo_pulsewidth(pin, val)
 
         except (ValueError, pigpio.error):
-            exstr = 'Pulsewidth must be a float between 500 and 2500, or 0\n'
-            click.echo(exstr)
+            errstr = 'Pulsewidth must be a float between 500 and 2500, or 0\n'
+            click.echo(errstr)
 
     # shutdown
     pi.stop()

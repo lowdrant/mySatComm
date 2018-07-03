@@ -113,7 +113,7 @@ class Rotator(object):
 
         if not self.attached:
             raise RotatorClassException('Error: rotator not attached')
-        self.writeRotator(0, 0)
+        self.write(0, 0)
 
     def calibrate(self):
         """Calibrate rotator by sequentially moving it to
@@ -127,7 +127,7 @@ class Rotator(object):
         for az in (90, 180, 270, 360):
             input('Press enter to move to {0} degrees Azimuth: '.format(az))
             for i in range(5):
-                self.writeRotator(az/4*i, 0)
+                self.write(az/4*i, 0)
                 time.sleep(0.125)
 
         input('Press enter to zero rotator again: ')
@@ -137,9 +137,9 @@ class Rotator(object):
         # Elevation calibration
         for el in (-10, 30, 45, 60, 90):
             input('Press enter to move to {0} degrees Elevation: '.format(el))
-            self.writeRotator(0, el)
+            self.write(0, el)
             for i in range(5):
-                self.writeRotator(0, el/4*i)
+                self.write(0, el/4*i)
                 time.sleep(0.125)
 
         # Return to home position
@@ -152,7 +152,7 @@ class Rotator(object):
         :param az: Azimuth angle
         :type az:  float
         :param el: Elevation angle
-        :type el: float
+        :type el:  float
         """
 
         if not self.attached:
@@ -173,7 +173,6 @@ class Rotator(object):
             az1 = az
             az2 = 0
 
-        # TODO: Spline trajectories
         """
         # generate trajectories for azimuth servos
         az0 = self.readAz()  # establish current positions

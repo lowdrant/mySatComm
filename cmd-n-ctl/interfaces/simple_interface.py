@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#!/usr/bin/env python3
 """
 Experimental CLI script for rotator control with hamlib.
 
@@ -16,8 +16,8 @@ from rotator import Rotator
 
 # Rotator setup
 rot = Rotator()
-rot.attach(22, 23, 34)
-ser = serial.Serial(port='/dev/ttyS11', baudrate=38400, timeout=0.5)
+rot.attach(27, 23, 34)  # from my soldershield design
+ser = serial.Serial(port='/dev/ttySatR', baudrate=38400, timeout=0.5)
 
 # Reading input and Commanding servos
 while True:
@@ -45,3 +45,8 @@ while True:
     except serial.SerialException:
         print('Serial port closed unexpectedly!')
         break
+
+    # There is no need for a delay or sleep command at loop end because
+    # Serial.readline causes a delay on its own.
+    # From the PySerial documentation, readline waits for the timeout to expire
+    # before returning read data from the serial port.

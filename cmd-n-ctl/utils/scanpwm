@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#!/usr/bin/env python3
 """
 CLI for automatically varying PWM on a specified pin
 
@@ -17,10 +17,15 @@ import pigpio
 def main(pin):
     """Scans pwm settings on a Broadcom-numbered pin."""
 
+    # errcheck
+    if pin != int(pin):
+        raise ValueError('pin must be of type \'int\'')
+
     # startup
     pin = int(pin)
     pi = pigpio.pi()
     pi.set_servo_pulsewidth(pin, 0)  # force error if bad pin
+    print('scanpwm initialized!\n')  # notify user of startup
 
     # control
     go = True
@@ -30,7 +35,7 @@ def main(pin):
             click.echo("Wrote {1}us to pin {0}".format(pin, i))
 
             val = input('Press enter to continue or type \'q\' to exit: ')
-            if val == 'q':
+            if val == 'q' or val == 'exit' or val == 'quit':
                 go = False
                 break
 
