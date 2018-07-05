@@ -1,5 +1,5 @@
 # mySatComm
-Homebrew groundstation for receiving data from satellites. Servos are controlled via Raspberry Pi, and DSP is handled through the GNU Radio and GPredict programs.
+Homebrew groundstation for receiving data from satellites. Servos are controlled via Raspberry Pi; DSP is handled through the GNU Radio and GPredict.
 
 ## Project Overview
 This is a farm-to-table amateur radio project composed of 3 major subprojects:
@@ -8,8 +8,9 @@ This is a farm-to-table amateur radio project composed of 3 major subprojects:
 	* Antenna Rig
 	* Orientation Controller
 * Command & Control Software
-	* Servomotor control
-	* GPredict command interfacing
+	* Servomotor low-level control
+	* GPredict command interface
+	* Rotator trajectory generation
 * Digital Signal Processing
 	* Radio demodulation and doppler shifting
 	* Information decoding
@@ -20,10 +21,10 @@ Clone this repo to your Raspberry Pi and run [install.sh](installers/install.sh)
 
 To uninstall, run the corresponding [uninstall.sh](installers/uninstall.sh) script.
 
-On your PC, install [GPredict](http://gpredict.oz9aec.net/), [GNU Radio](https://www.gnuradio.org/), and the [SDR folder](sdr).
+On your PC, install [GPredict](http://gpredict.oz9aec.net/), [GNU Radio](https://www.gnuradio.org/), and download the [SDR folder](sdr).
 
 ## Using the programs
-1. Create a GPredict module tracking some satellites of interest. Be sure to look at the [manual](documentation/gpredict_manual.PDF) and [website](http://gpredict.oz9aec.net/); I don't provide any GPredict configurations here.
+1. Create a GPredict module tracking some satellites of interest. Be sure to look at the [manual](documentation/gpredict_manual.PDF) and [website](http://gpredict.oz9aec.net/).
 
 2. Configure GPredict to interface with your Raspberry Pi as a networked rotator (you'll need its IP address).
 
@@ -64,14 +65,16 @@ On your PC, install [GPredict](http://gpredict.oz9aec.net/), [GNU Radio](https:/
 	* Circular polarization is annoying (for me) to get right
 * Homebrew dipole antenna base made from PVC, AWG14 wire, and screws
 	* COTS parts increase accessiblity and homebrew aesthetic
-	* Thicker wire chosen for increase rigidity
+	* Thicker wire chosen for increased rigidity
 
 ### Controller
-* Custom-made servo brackets (sized for [SainSmart SR319](https://www.sainsmart.com/products/copy-of-all-purpose-digital-servo-sr318?nosto=customers-also-bought))
-	* Had two already on-hand
-	* SainSmart doesn't sell  individual brackets  ($$)
-* Custom platform
-	* SainSmart doesn't sell individual brackets
+* Custom housing
+	* Convenient mount point for rotator
+	* Minimizes wiring connecting Pi and servos
+	* 3D printed for rapid prototyping
+* Solderboard Pi shield
+	* More reliable wiring of servo battery power
+	* Faster connect/disconnect of servos from Pi
 
 ### Software
 * GPredict
@@ -80,9 +83,9 @@ On your PC, install [GPredict](http://gpredict.oz9aec.net/), [GNU Radio](https:/
 	* Sends antenna orientation commands over TCP/IP
 	* [Manual here](documentation/gpredict_manual.PDF)
 * PiGPIO
-	* Provides hardware-time PWM (HUGE for servo control)
+	* Provides almost-hardware-timed PWM (important for servo control)
 	* PWM less noisy and more reliable than RPi-GPIO or wiringPi
-	* Both Python and C interfaces
+	* Simple Python interface
 
 ## Author
 Marion Anderson - [lmander42](https://github.com/lmander42)
