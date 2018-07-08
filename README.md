@@ -1,5 +1,5 @@
 # mySatComm
-Homebrew groundstation for receiving data from satellites. Servos are controlled via Raspberry Pi; DSP is handled through the GNU Radio and GPredict.
+Homebrew groundstation for receiving data from satellites. Servos are controlled via Raspberry Pi; DSP is handled through the GNU Radio and GPredict. Go [here](mechanical/stl) to see STL models in GitHub.
 
 ## Project Overview
 This is a farm-to-table amateur radio project composed of 3 major subprojects:
@@ -16,8 +16,7 @@ This is a farm-to-table amateur radio project composed of 3 major subprojects:
 	* Information decoding
 
 ## Installation
-
-Clone this repo to your Raspberry Pi and run [install.sh](installers/install.sh). All Python dependencies will be installed in a virtual environment at `$HOME/.satcomm`
+Clone this repo to your Raspberry Pi and run [install.sh](installers/install.sh). All Python dependencies will be installed in a virtual environment at `$HOME/.satcomm`. Additionally, 
 
 To uninstall, run the corresponding [uninstall.sh](installers/uninstall.sh) script.
 
@@ -49,6 +48,7 @@ On your PC, install [GPredict](http://gpredict.oz9aec.net/), [GNU Radio](https:/
 * [Data Decoding](sdr/decoder)
 
 ### Mechanical Quick Reference
+* [GitHub-viewable Models](mechanical/stl)
 * [Antenna Rotator](mechanical/drawings/controller.PDF)
 * [Base Dipole](mechanical/drawings/dipole.PDF)
 * [Bill of Materials](BOM.txt)
