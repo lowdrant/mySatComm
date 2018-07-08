@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Experimental CLI script for rotator control with hamlib.
+Hardcoded script for connecting the rotator to hamlib
 
 Run stitcher.sh before this and unstitcher.sh after
 
@@ -10,14 +10,18 @@ file:   interface.py
 """
 from __future__ import absolute_import, print_function
 
+import os
+
 import serial
 
 from rotator import Rotator
 
 # Rotator setup
 rot = Rotator()
-rot.attach(27, 23, 34)  # from my soldershield design
-ser = serial.Serial(port='/dev/ttySatR', baudrate=38400, timeout=0.5)
+rot.attach(27, 23, 24)  # from my soldershield design
+homedir = os.environ['HOME']
+ser = serial.Serial(port=homedir + '/.satcomm/ttySatR',
+                    baudrate=38400, timeout=0.25)
 
 # Reading input and Commanding servos
 while True:

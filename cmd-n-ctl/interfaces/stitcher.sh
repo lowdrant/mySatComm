@@ -9,7 +9,8 @@
 # date:   2018-06-12
 # file:   stitcher.sh
 
-set -o errexit -o pipefail
+set -o errexit
+set -o pipefail
 echo "Running stitcher.sh"; echo
 
 # servo control daemon
@@ -26,8 +27,9 @@ if [ $(ps aux | grep socat | wc --lines) -gt 1 ]
 then
   echo "socat already running!"
 else
-  sudo socat PTY,link=/dev/ttySatT PTY,link=/dev/ttySatR &
-  echo "socat started on ttySatT & ttySatR!"
+  sudo socat PTY,link="$HOME/.satcomm/ttySatT",user="$USER"\
+             PTY,link="$HOME/.satcomm/ttySatR",user="$USER" &
+  echo "socat started!"
 fi
 
 # rotator control
@@ -36,8 +38,8 @@ if [ $(ps aux | grep rotctld | wc --lines) -gt 1 ]
 then
   echo "rotctld already running!"
 else
-  sudo rotctld -m 201 -T 10.0.0.117 -vvvvv -r /dev/ttySatT &> rotlog.log &
-  echo "rotctld activated on ttyS10 with EasyComm I protocol!"
+  sudo rotctld -m 201 -T raspberrypi.local -vvvvv -r "/home/$USER/.satcomm/ttySatT" &> rotlog.log &
+  echo "rotctld activated using EasyComm I protocol!"
 fi
 
 echo

@@ -32,8 +32,11 @@ for name in "${proc_names[@]}"; do
   else
     get_pid "$name"
     sudo kill $pid
-    if [ $? ]; then; echo "$name killed!"
-    else; echo "Failed to kill $name !"; fi
+    if [ $? ]; then
+      echo "$name killed!"
+    else
+      echo "Failed to kill $name !"
+    fi
   fi
 done
 
