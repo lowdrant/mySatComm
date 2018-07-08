@@ -10,6 +10,7 @@ set -o errexit -o pipefail
 # Script Execution
 # ================
 echo "Running cmd-n-ctl install.sh"
+script_path=$(dirname "$0")  # for copying files
 
 # Install python3
 # ---------------
@@ -48,18 +49,18 @@ echo "Checking for virtualenv..."
 sudo pip3 install virtualenv
 
 # activating virtualenv
-if ! [ -e $HOME/.satcomm/bin/activate ]; then
+if ! [ -e "$HOME/.satcomm/bin/activate" ]; then
   echo; echo "Creating virtual environment..."
-  python3 -m venv /home/$USER/.satcomm
+  python3 -m venv "$HOME/.satcomm/"
 fi
-source $HOME/.satcomm/bin/activate
+source "$HOME/.satcomm/bin/activate"
 echo "Virtual environment activated!"
 echo; echo "Installing python packages..."
 
 # Install python packages
 # -----------------------
 echo "Installing rotator-lib..."
-pip3 install -e ../cmd-n-ctl/rotator-lib/ --no-cache-dir
+pip3 install -e "$script_path/../cmd-n-ctl/rotator-lib/" --no-cache-dir
 echo; echo "Installing pyserial..."
 pip3 install pyserial --no-cache-dir
 echo; echo "Installing click..."
@@ -68,14 +69,19 @@ pip3 install click --no-cache-dir
 # Copy config files
 # -----------------
 echo; echo "Copying test scripts and config files to virtualenv"
-cp ../cmd-n-ctl/configs/rotator_config.json "$HOME/.satcomm/include"
-cp ../cmd-n-ctl/utils/* "$HOME/.satcomm/bin"
+cp "$script_path/../cmd-n-ctl/configs/rotator_config.json" "$HOME/.satcomm/include"
+# for loop is necessary because the dynamic path interferes with globbing
+# yes, it is hacky. If you have a more robust solution please let me know 
+for i in $(ls "$script_path/../cmd-n-ctl/utils/"); do
+    cp "$script_path/../cmd-n-ctl/utils/$i" "$HOME/.satcomm/bin/"
+done
+cp "$script_path/../run.sh" "$HOME/.satcomm/bin/"
 
 # Cleanup
 # -------
 deactivate
 echo
 echo "Installation Complete!"
-echo "Virtual environment stored in /home/pi/.satcomm/bin/activate"
+echo "Virtual environment stored in $HOME/.satcomm/bin/activate"
 
 exit 0

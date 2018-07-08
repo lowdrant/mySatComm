@@ -38,7 +38,7 @@ if [ $(ps aux | grep rotctld | wc --lines) -gt 1 ]
 then
   echo "rotctld already running!"
 else
-  sudo rotctld -m 201 -T raspberrypi.local -vvvvv -r "/home/$USER/.satcomm/ttySatT" &> rotlog.log &
+  sudo rotctld -m 201 -T "raspberrypi.local" -vvvvv -r "/home/$USER/.satcomm/ttySatT" &> rotlog.log &
   echo "rotctld activated using EasyComm I protocol!"
 fi
 

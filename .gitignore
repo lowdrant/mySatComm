@@ -12,3 +12,7 @@
 
 # vscode settings
 .vscode/
+
+# my hamlib logger file
+# could show up anywhere now that I've generalized the paths
+*/rotlog.log
