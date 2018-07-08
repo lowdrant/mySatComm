@@ -17,7 +17,7 @@ This is a farm-to-table amateur radio project composed of 3 major subprojects:
 
 ## Installation
 
-Clone this repo to your Raspberry Pi and run [install.sh](installers/install.sh). All Python dependencies will be installed in a virtual environment at `/home/$USER/.satcomm`
+Clone this repo to your Raspberry Pi and run [install.sh](installers/install.sh). All Python dependencies will be installed in a virtual environment at `$HOME/.satcomm`
 
 To uninstall, run the corresponding [uninstall.sh](installers/uninstall.sh) script.
 
@@ -51,7 +51,7 @@ On your PC, install [GPredict](http://gpredict.oz9aec.net/), [GNU Radio](https:/
 ### Mechanical Quick Reference
 * [Antenna Rotator](mechanical/drawings/controller.PDF)
 * [Base Dipole](mechanical/drawings/dipole.PDF)
-* [Materials and Tools](BOM.txt)
+* [Bill of Materials](BOM.txt)
 
 ### Software Quick Reference
 * [HamLib (GPredict Command Library)](http://hamlib.sourceforge.net/manuals/1.2.15/index.html)

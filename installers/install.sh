@@ -48,11 +48,11 @@ echo "Checking for virtualenv..."
 sudo pip3 install virtualenv
 
 # activating virtualenv
-if ! [ -e /home/$USER/.satcomm/bin/activate ]; then
+if ! [ -e $HOME/.satcomm/bin/activate ]; then
   echo; echo "Creating virtual environment..."
   python3 -m venv /home/$USER/.satcomm
 fi
-source /home/$USER/.satcomm/bin/activate
+source $HOME/.satcomm/bin/activate
 echo "Virtual environment activated!"
 echo; echo "Installing python packages..."
 
@@ -68,8 +68,8 @@ pip3 install click --no-cache-dir
 # Copy config files
 # -----------------
 echo; echo "Copying test scripts and config files to virtualenv"
-cp ../cmd-n-ctl/configs/rotator_config.json ~/.satcomm/include
-cp ../cmd-n-ctl/utils/* ~/.satcomm/bin
+cp ../cmd-n-ctl/configs/rotator_config.json "$HOME/.satcomm/include"
+cp ../cmd-n-ctl/utils/* "$HOME/.satcomm/bin"
 
 # Cleanup
 # -------

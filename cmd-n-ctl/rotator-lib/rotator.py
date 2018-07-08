@@ -40,7 +40,6 @@ class Rotator(object):
         Servos are not attached by default. Run `rotator.attach()` to reserve
         system resources.
         """
-
         # assign pins NoneType by default
         self.pin_az1 = None
         self.pin_az2 = None
@@ -68,7 +67,6 @@ class Rotator(object):
         .. note::
         See Raspberry Pi pinout here: https://pinout.xyz/#
         """
-
         self.pi = pigpio.pi()  # reserving daemon resources
 
         self.pin_az1 = pin_az1
@@ -89,7 +87,6 @@ class Rotator(object):
 
     def detach(self):
         """Stop servo and release PWM resources."""
-
         self.zero()  # return to default position at end of script
         self.pi.stop()  # releases resources used by pigpio daemon
         self.attached = False
@@ -100,7 +97,6 @@ class Rotator(object):
         Directly uses PiGPIO functions to avoid other system breakdowns in
         case of emergency.
         """
-
         if not self.attached:
             raise RotatorClassException('Error: rotator not attached')
         # Directly command servos to 0 as a failure safeguard
@@ -110,7 +106,6 @@ class Rotator(object):
 
     def zero(self):
         """Move rotator to default position, 0deg Az, 0deg El."""
-
         if not self.attached:
             raise RotatorClassException('Error: rotator not attached')
         self.write(0, 0)
@@ -119,7 +114,6 @@ class Rotator(object):
         """Calibrate rotator by sequentially moving it to
         well-defined positions.
         """
-
         input('Press enter to zero rotator: ')
         self.zero()
 
@@ -135,7 +129,7 @@ class Rotator(object):
         self.zero()
 
         # Elevation calibration
-        for el in (-10, 30, 45, 60, 90):
+        for el in (-10, 30, 45, 60, 80):
             input('Press enter to move to {0} degrees Elevation: '.format(el))
             self.write(0, el)
             for i in range(5):
@@ -154,12 +148,13 @@ class Rotator(object):
         :param el: Elevation angle
         :type el:  float
         """
-
         if not self.attached:
             raise RotatorClassException('Rotator not attached!')
 
         # Input processing
         az = az % 360  # constrain azimuth to 360 degrees
+        if el < -10 or el > 90:
+            raise RotatorClassException('El constrained to [0, 90]')
         el += 90  # 0deg el is 90deg servo, b/c elevation goes up & down
         self.az = az
         self.el = el
@@ -173,6 +168,8 @@ class Rotator(object):
             az1 = az
             az2 = 0
 
+        # TODO: Implement splining
+        # TODO: Experiment with direct write vs splining logic
         """
         # generate trajectories for azimuth servos
         az0 = self.readAz()  # establish current positions
@@ -194,7 +191,6 @@ class Rotator(object):
         This just returns the last value written to the rotator. This is the
         only option, as this class does not support feedback servos
         """
-
         return self.az
 
     def readEl(self):
@@ -207,7 +203,6 @@ class Rotator(object):
         This just returns the last value written to the rotator. This is the
         only option, as this class does not support feedback servos
         """
-
         return self.el
 
     def _write_servo(self, pin, degrees):
@@ -230,7 +225,6 @@ class Rotator(object):
         m = (2500 - 500) / (180 - 0) = 200 / 18
         b = 500
         """
-
         if degrees > 180 or degrees < 0:
             exceptstr = 'Angle {0} out of range [0, 180]'.format(degrees)
             raise RotatorClassException(exceptstr)
@@ -267,7 +261,6 @@ class Rotator(object):
         The delay time between movements should be dt / Rotator.num_pts.
         All movements are in equal amounts of time
         """
-
         # default case: p0 = pf
         coeffs = [0] * self.num_pts  # spline coefficient array
         degrees = [p0] * self.num_pts  # trajectory
@@ -301,7 +294,6 @@ class Rotator(object):
 
         .. note:
         """
-
         if len(degrees) != 3:
             exceptstr = 'Bad arg: degrees needs 3 trajectories'
             raise RotatorClassException(exceptstr)
