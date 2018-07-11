@@ -179,7 +179,7 @@ class Rotator(object):
         """
         self._write_servo(self.pin_az1, az1)
         self._write_servo(self.pin_az2, az2)
-        self._write_servo(self.pin_el, el)
+        self._write_servo(self.pin_el, el, reverse=False)
 
     def readAz(self):
         """Read current rotator azimuth in degrees.
@@ -205,13 +205,16 @@ class Rotator(object):
         """
         return self.el
 
-    def _write_servo(self, pin, degrees):
+    def _write_servo(self, pin, degrees, reverse=True):
         """Internal helper method for moving servos.
 
         :param pin:     Broadcom pin number of servo being written
         :type pin:      int
         :param degrees: Angle to move servo
         :type degrees:  float
+        :param reverse: Reverse the direction of rotation (0deg->180, 180->0)
+                        Default True
+        :type reverse: bool
 
         .. note::
         This is the only function that directly writes to the servos (which
@@ -224,12 +227,16 @@ class Rotator(object):
         Therefore the coefficients are:
         m = (2500 - 500) / (180 - 0) = 200 / 18
         b = 500
+
+        To reverse, the equation becomes -200/18*(180-deg) + 500
         """
         if degrees > 180 or degrees < 0:
             exceptstr = 'Angle {0} out of range [0, 180]'.format(degrees)
             raise RotatorClassException(exceptstr)
 
         # Sending command signal
+        if reverse:
+            degrees = 180 - degrees
         us = 200 / 18.0 * degrees + 500  # eq: (2500-500)/(180-0) + 500
         self.pi.set_servo_pulsewidth(pin, us)
 

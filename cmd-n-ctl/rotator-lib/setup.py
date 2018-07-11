@@ -11,7 +11,7 @@ from setuptools import setup
 
 setup(
     name='rotator',
-    version='0.2.0',
+    version='1.0',
     description='Python interface to SainSmart servos via Raspberry Pi',
     url='http://github.com/lmander42/mySatComm/cmd-n-ctl/rotator-lib',
     author='lmander42',
