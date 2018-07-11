@@ -16,3 +16,7 @@
 # my hamlib logger file
 # could show up anywhere now that I've generalized the paths
 *rotlog.log
+
+# gnuradio files
+apt_dump_sink
+*build
