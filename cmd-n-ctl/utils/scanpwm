@@ -16,10 +16,8 @@ import pigpio
 @click.argument('pin')
 def main(pin):
     """Scans pwm settings on a Broadcom-numbered pin."""
+    print('Starting scanpwm!')
 
-    # errcheck
-    if pin != int(pin):
-        raise ValueError('pin must be of type \'int\'')
 
     # startup
     pin = int(pin)
@@ -41,3 +39,6 @@ def main(pin):
 
     # shutdown
     pi.stop()
+
+if __name__ == '__main__':
+    main()
