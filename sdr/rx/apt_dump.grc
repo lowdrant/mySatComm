@@ -187,6 +187,49 @@
     </param>
   </block>
   <block>
+    <key>gpredict_doppler</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(320, 200)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>gpredict_host</key>
+      <value>localhost</value>
+    </param>
+    <param>
+      <key>gpredict_port</key>
+      <value>4532</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>gpredict_doppler_0</value>
+    </param>
+    <param>
+      <key>target</key>
+      <value>doppler_freq</value>
+    </param>
+    <param>
+      <key>verbose</key>
+      <value>True</value>
+    </param>
+  </block>
+  <block>
     <key>rtlsdr_source</key>
     <param>
       <key>alias</key>
