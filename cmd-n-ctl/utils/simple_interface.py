@@ -19,6 +19,7 @@ from rotator import Rotator
 # Rotator setup
 rot = Rotator()
 rot.attach(23, 24, 27)  # from my soldershield design
+rot.zero()  # zero before doing anything
 homedir = os.environ['HOME']
 ser = serial.Serial(port=homedir + '/.satcomm/ttySatR',
                     baudrate=38400, timeout=0.5)
