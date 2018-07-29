@@ -156,6 +156,8 @@ class Rotator(object):
         if el < -10 or el > 90:
             raise RotatorClassException('El constrained to [0, 90]')
         el += 90  # 0deg el is 90deg servo, b/c elevation goes up & down
+        az0 = self.az  # save previous for splining
+        el0 = self.el
         self.az = az
         self.el = el
 
@@ -169,41 +171,15 @@ class Rotator(object):
             az2 = 0
 
         # TODO: Implement splining
-        # TODO: Experiment with direct write vs splining logic
         """
         # generate trajectories for azimuth servos
-        az0 = self.readAz()  # establish current positions
         p0_az1 = az0 if az0 < 180 else 180
-        p0_az1
+        p0_az1 = 0 if az0 <= 180 else az0 - 180
         traj_az1 = self._spline_trajectory(p0_az1, az1)
         """
         self._write_servo(self.pin_az1, az1)
         self._write_servo(self.pin_az2, az2)
         self._write_servo(self.pin_el, el, reverse=False)
-
-    def readAz(self):
-        """Read current rotator azimuth in degrees.
-
-        :returns: Rotator azimuth in degrees
-        :rtype:   float
-
-        .. note::
-        This just returns the last value written to the rotator. This is the
-        only option, as this class does not support feedback servos
-        """
-        return self.az
-
-    def readEl(self):
-        """Read current rotator elevation in degrees.
-
-        :returns: Rotator elevation angle in degrees
-        :rtype:   float
-
-        .. note::
-        This just returns the last value written to the rotator. This is the
-        only option, as this class does not support feedback servos
-        """
-        return self.el
 
     def _write_servo(self, pin, degrees, reverse=True):
         """Internal helper method for moving servos.

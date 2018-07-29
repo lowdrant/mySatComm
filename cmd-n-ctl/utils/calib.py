@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 """
-CLI for zeroing the rotator.
-Intended for testing and setup uses.
+Runs rotator calibration sequence
 
 author: Marion Anderson
-date:   2018-07-28
-file:   zero.py
+date:   2018-07-29
+file:   calib.py
 """
 from __future__ import absolute_import, print_function
 
@@ -18,4 +17,4 @@ from rotator import Rotator
 # Rotator setup
 rot = Rotator()
 rot.attach(27, 23, 24)  # from my soldershield design
-rot.zero()  # zero before doing anything
+rot.calibrate()  # zero before doing anything

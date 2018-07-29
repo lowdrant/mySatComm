@@ -1,7 +1,0 @@
-{
-    "pin_az1": 27,
-    "pin_az2": 23,
-    "pin_el": 24,
-    "port": "/dev/ttySatR",
-    "baudrate": 38400
-}
