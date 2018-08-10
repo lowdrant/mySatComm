@@ -15,6 +15,5 @@ import serial
 from rotator import Rotator
 
 # Rotator setup
-rot = Rotator()
-rot.attach(27, 23, 24)  # from my soldershield design
+rot = Rotator(17, 4, 18)
 rot.calibrate()  # zero before doing anything

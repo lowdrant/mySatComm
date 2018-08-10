@@ -17,5 +17,5 @@ from rotator import Rotator
 
 # Rotator setup
 rot = Rotator()
-rot.attach(27, 23, 24)  # from my soldershield design
+rot.attach(17, 4, 18)  # from my soldershield design
 rot.zero()  # zero before doing anything
