@@ -21,7 +21,7 @@ class RotatorClassException(Exception):
 
 class Rotator(object):
     """
-    Interface to 3-servo antenna rotator using PiGPIO pwm methods.
+    Interface to antenna rotator using a stepper motor and a servo.
 
     See this link for PiGPIO documentation:
     http://abyz.me.uk/rpi/pigpio/index.html
@@ -30,8 +30,20 @@ class Rotator(object):
     https://pinout.xyz/#
     """
 
-    def __init__(self):
+    def __init__(self, pin_az, pin_el, pin_dir, step_angle=1.8, step_delay=5):
         """Create basic antenna rotator instancece
+
+        :param pin_az: GPIO pin for incrementing step
+        :type pin_azfwd: length-4 int array
+        :param pin_el:  GPIO pin for elevation servo
+        :type pin_el:  int
+        :param pin_dir: GPIO pin controlling stepper direction
+        :type pin_dir: int
+
+        :param step_angle: Az control step angle in degrees (Default: 1.8)
+        :type step_angle: float
+        :param step_delay: Delay between phases in milliseconds (Default: 5)
+        :type step_delay: float
 
         .. note::
         See Raspberry Pi and your motors' documentation for acceptable
@@ -41,14 +53,16 @@ class Rotator(object):
         Servos are not attached by default. Run `rotator.attach()` to reserve
         system resources.
         """
-        # assing pins NoneType by default
-        self.pin_azfwd = None
-        self.pin_azrev = None
-        self.pin_el = None
+        # Assigning motor params
+        self.pin_az = pin_az
+        self.pin_el = pin_el
+        self.pin_dir = pin_dir
+        self.step_angle = step_angle
+        self.step_delay = step_delay
 
-        # determine current position
+        # Determining current position
         homepath = os.environ['HOME']
-        self.statepath = homepath + '/rotator-state.conf'
+        self.statepath = homepath + '.satcomm/rotator-state.conf'
         self.statefile = open(self.statepath, 'r+')
         if os.path.isfile(self.statepath):
             state = self.statefile.read()
@@ -61,61 +75,38 @@ class Rotator(object):
 
         # other parameters
         self.pi = None  # pigpio interface object
-        self.attached = False
         self.num_pts = 4  # internal const for _spline_trajectory()
+        self.attached = False
 
-    def attach(self, pin_azfwd, pin_azrev, pin_el):
+    def attach(self):
         """Initiate rotator control interface.
-
-        :param pin_azfwd: GPIO pin for 1st azimuth servo
-        :type pin_azfwd: int
-        :param pin_azrev: GPIO pin for 1st azimuth servo
-        :type pin_azrev: int
-        :param pin_el:  GPIO pin for elevation servo
-        :type pin_el:  int
 
         .. note::
         See Raspberry Pi pinout here: https://pinout.xyz/#
         """
         self.pi = pigpio.pi()  # reserving daemon resources
 
-        self.pin_azfwd = pin_azfwd
-        self.pin_azrev = pin_azrev
-        self.pin_el = pin_el
-
-        # all are output
-        self.pi.set_mode(self.pin_azfwd, pigpio.OUTPUT)
-        self.pi.set_mode(self.pin_azrev, pigpio.OUTPUT)
+        # Set all pins to output
+        self.pi.set_mode(self.pin_az, pigpio.OUTPUT)
+        self.pi.set_mode(self.pin_dir, pigpio.OUTPUT)
         self.pi.set_mode(self.pin_el, pigpio.OUTPUT)
 
-        # explicitly turn off output
+        # Force output low
         self.pi.set_servo_pulsewidth(self.pin_el, 0)
-
-        self.attached = True  # if no errors, servos should now be attached
+        self.pi.write(self.pin_az, 0)
+        self.pi.write(self.pin_dir, 0)
+        self.attached = True
 
     def detach(self):
         """Stop servo and release PWM resources."""
-        self.zero()  # return to default position at end of script
         self.pi.stop()  # releases resources used by pigpio daemon
         self.statefile.close()  # close file stream
         self.attached = False
 
-    def absoluteZero(self):
-        """Source of truth zeroing function.
-
-        Directly uses PiGPIO functions to avoid other system breakdowns in
-        case of emergency.
-        """
-        if not self.attached:
-            raise RotatorClassException('Error: rotator not attached')
-        # TODO: Zero stepper motor
-        # Directly command servos to 0 as a failure safeguard
-        self.pi.set_servo_pulsewidth(self.pin_el, 1500)  # el 0 is halfway
-
     def zero(self):
-        """Move rotator to default position, 0deg Az, 0deg El."""
+        """Move rotator to default position: 0deg Az, 0deg El."""
         if not self.attached:
-            raise RotatorClassException('Error: rotator not attached')
+            raise RotatorClassException('Rotator not attached')
         self.write(0, 0)
 
     def calibrate(self):
@@ -151,6 +142,9 @@ class Rotator(object):
     def write(self, az, el):
         """Move rotator to an orientation given in degrees.
 
+        Handles input processing and commanding. The individual commands
+        update the state variables.
+
         :param az: Azimuth angle
         :type az:  float
         :param el: Elevation angle
@@ -159,22 +153,17 @@ class Rotator(object):
         if not self.attached:
             raise RotatorClassException('Rotator not attached!')
 
-        # TODO: Convert az control to stepper motor
         # Input processing
-        az = az % 360  # constrain azimuth to 360 degrees
         if el < -10 or el > 90:
             raise RotatorClassException('El constrained to [-10, 90]')
-        el += 90  # 0deg el is 90deg servo, b/c elevation goes up & down
+        el += 90   # 0deg el is 90deg servo, b/c elevation goes up & down
+        az %= 360  # angles wrap at 360deg
 
-        # Commanding servos
+        # Command motors BEFORE updating self.
+        # This allows the motor methods to decide how to move or spline
         # TODO: Implement splining
         self._write_az(az)
         self._write_el(el)
-
-        # Saving state
-        self.az = az
-        self.el = el
-        self._savestate()
 
     def _write_el(self, degrees):
         """Lowlevel servo elevation control (internal method).
@@ -194,35 +183,64 @@ class Rotator(object):
         m = (2500 - 500) / (180 - 0) = 200 / 18
         b = 500
         """
-        if degrees > 180 or degrees < 0:
-            exceptstr = 'Angle {0} out of range [0, 180]'.format(degrees)
+        if degrees > 90 or degrees < -10:
+            exceptstr = 'Angle {0} out of range [-10, 90]'.format(degrees)
             raise RotatorClassException(exceptstr)
 
+        # Move servo and then hold it in that position
         us = 200 / 18.0 * degrees + 500  # eq: (2500-500)/(180-0) + 500
         self.pi.set_servo_pulsewidth(self.pin_el, us)
-
-        # Unsetting command signal
-        # (reduces risk of accidental servo response)
         time.sleep(0.2)  # experimentally determined delay
         self.pi.set_servo_pulsewidth(self.pin_el, 0)
 
-    # TODO: Implement _write_az method
+        # Save state
+        self.el = degrees
+        self._savestate()
+
     def _write_az(self, degrees):
-        """Lowlevel stepper motor azimuth control (internal method).
+        """Changes rotator azimuth (internal method).
 
         :param degrees: Desired azimuth position in degrees
         :type degrees: float
         """
-        raise NotImplementedError('Need to do stepper implementation!!')
+        # Choose rotation direction by minimizing distance
+        cwdiff = abs(self.az - degrees)
+        ccwdiff = abs(self.az - degrees + 360)  # 2pi rotation
+
+        # Determine num steps and rotate
+        # CW
+        if cwdiff < ccwdiff:
+            self.pi.write(self.pin_dir, 1)
+            steps = round(cwdiff / self.step_angle)
+            time.sleep(0.001)  # delay for pin write
+            for i in range(steps):
+                self.pi.write(self.pin_az, 1)
+                time.sleep(self.step_delay)
+                self.pi.write(self.pin_az, 0)
+                time.sleep(self.step_delay)
+        # CCW
+        else:
+            self.pi.write(self.pin_dir, 0)
+            steps = round(ccwdiff / self.step_angle)
+            time.sleep(0.001)  # delay for pin write
+            for i in range(steps):
+                self.pi.write(self.pin_az, 1)
+                time.sleep(self.step_delay)
+                self.pi.write(self.pin_az, 0)
+                time.sleep(self.step_delay)
+
+        # Record actual azimuth
+        self.az = steps * self.step_angle
+        self._savestate()
 
     def _savestate(self):
-        """Overwrites rotator position to persistent file.
+        """Overwrites rotator position to persistent file (internal method).
 
         .. note::
         Update az and el BEFORE calling this method.
         """
         self.statefile.seek(0)
-        self.statefile.write('Az: ' + str(self.az) + 'El: ' + str(self.el))
+        self.statefile.write('Az: ' + str(self.az) + ' El: ' + str(self.el))
         self.statefile.flush()
 
     # TODO: Test spline generation

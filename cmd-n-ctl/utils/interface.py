@@ -17,8 +17,7 @@ import serial
 from rotator import Rotator
 
 # Rotator setup
-rot = Rotator()
-rot.attach(23, 24, 27)  # from my soldershield design
+rot = Rotator(17, 4, 18)
 rot.zero()  # zero before doing anything
 homedir = os.environ['HOME']
 ser = serial.Serial(port=homedir + '/.satcomm/ttySatR',
@@ -38,7 +37,6 @@ while True:
         el_angle = int(float(el_str[2:]))  # fmt: ELxxx.x
 
         # execute
-        # TODO: Conver az-el coordinates to servo angles
         print('Az', az_angle, 'El', el_angle)
         rot.write(az_angle, el_angle)
 
