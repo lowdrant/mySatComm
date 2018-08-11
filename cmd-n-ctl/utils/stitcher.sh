@@ -22,7 +22,7 @@ else
   echo "pigpiod activated!"
 fi
 
-# stitch ttyS10 and ttyS11 together
+# stitch custom serial ports together
 if [ $(ps aux | grep socat | wc --lines) -gt 1 ]
 then
   echo "socat already running!"
@@ -38,7 +38,7 @@ if [ $(ps aux | grep rotctld | wc --lines) -gt 1 ]
 then
   echo "rotctld already running!"
 else
-  sudo rotctld -m 201 -T "raspberrypi.local" -vvvvv -r "/home/$USER/.satcomm/ttySatT" &> rotlog.log &
+  sudo rotctld -m 201 -T "raspberrypi.local" -vvvvv -r "$HOME/.satcomm/ttySatT" &> rotlog.log &
   echo "rotctld activated using EasyComm I protocol!"
 fi
 
