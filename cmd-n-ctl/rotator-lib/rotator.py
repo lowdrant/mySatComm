@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 """
-Object file for class interfacing with a 3-servo rotator
+Object file for class interfacing with antenna rotator
 
 author: Marion Anderson
 date:   2018-06-17
@@ -212,9 +212,9 @@ class Rotator(object):
         # Determine num steps and rotate
         # CW
         if cwdiff < ccwdiff:
-            self.pi.write(self.pin_dir, 1)
-            steps = round(cwdiff / self.step_angle)
-            time.sleep(0.001)  # delay for pin write
+            self.pi.write(self.pin_dir, 1)  # CW mode
+            time.sleep(0.001)  # propagation delay
+            steps = round(cwdiff / self.step_angle)  # how many steps
             for i in range(steps):
                 self.pi.write(self.pin_az, 1)
                 time.sleep(self.step_delay)
@@ -222,9 +222,9 @@ class Rotator(object):
                 time.sleep(self.step_delay)
         # CCW
         else:
-            self.pi.write(self.pin_dir, 0)
-            steps = round(ccwdiff / self.step_angle)
-            time.sleep(0.001)  # delay for pin write
+            self.pi.write(self.pin_dir, 0)  # CCW mode
+            time.sleep(0.001)  # propagation delay
+            steps = round(ccwdiff / self.step_angle)  # how many steps
             for i in range(steps):
                 self.pi.write(self.pin_az, 1)
                 time.sleep(self.step_delay)
