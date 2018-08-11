@@ -10,6 +10,7 @@ from __future__ import absolute_import, print_function
 
 import os
 import time
+from threading import Thread
 
 import pigpio
 
@@ -154,16 +155,17 @@ class Rotator(object):
             raise RotatorClassException('Rotator not attached!')
 
         # Input processing
-        if el < -10 or el > 90:
-            raise RotatorClassException('El constrained to [-10, 90]')
         el += 90   # 0deg el is 90deg servo, b/c elevation goes up & down
         az %= 360  # angles wrap at 360deg
 
-        # Command motors BEFORE updating self.
-        # This allows the motor methods to decide how to move or spline
+        # Command motors
         # TODO: Implement splining
-        self._write_az(az)
-        self._write_el(el)
+        thread_az = Thread(target=self._write_az, args=(az))
+        thread_el = Thread(target=self._write_el, args=(el))
+        thread_az.start()
+        thread_el.start()
+        thread_az.join()
+        thread_el.join()
 
     def _write_el(self, degrees):
         """Lowlevel servo elevation control (internal method).
@@ -184,7 +186,7 @@ class Rotator(object):
         b = 500
         """
         if degrees > 90 or degrees < -10:
-            exceptstr = 'Angle {0} out of range [-10, 90]'.format(degrees)
+            exceptstr = 'El angle is constrained between -10 and 90deg'
             raise RotatorClassException(exceptstr)
 
         # Move servo and then hold it in that position
@@ -198,14 +200,14 @@ class Rotator(object):
         self._savestate()
 
     def _write_az(self, degrees):
-        """Changes rotator azimuth (internal method).
+        """Low level stepper azimuth control (internal method).
 
         :param degrees: Desired azimuth position in degrees
         :type degrees: float
         """
         # Choose rotation direction by minimizing distance
-        cwdiff = abs(self.az - degrees)
-        ccwdiff = abs(self.az - degrees + 360)  # 2pi rotation
+        cwdiff = abs(self.az - degrees)  # CW increment
+        ccwdiff = abs(self.az - degrees + 360)  # CCW increment
 
         # Determine num steps and rotate
         # CW
