@@ -66,17 +66,6 @@ pip3 install pyserial --no-cache-dir
 echo; echo "Installing click..."
 pip3 install click --no-cache-dir
 
-# Copy config files
-# -----------------
-echo; echo "Copying test scripts and config files to virtualenv"
-cp "$script_path/../cmd-n-ctl/configs/rotator_config.json" "$HOME/.satcomm/include"
-# for loop is necessary because the dynamic path interferes with globbing
-# yes, it is hacky. If you have a more robust solution please let me know 
-for i in $(ls "$script_path/../cmd-n-ctl/utils/"); do
-    cp "$script_path/../cmd-n-ctl/utils/$i" "$HOME/.satcomm/bin/"
-done
-cp "$script_path/../run.sh" "$HOME/.satcomm/bin/"
-
 # Cleanup
 # -------
 deactivate

@@ -1,1 +1,1 @@
-pigpio===1.40.post1
+pigpio>=1.40.post1

@@ -159,6 +159,7 @@ class Rotator(object):
         az %= 360  # angles wrap at 360deg
 
         # Command motors
+        # use threading to allow simultaneous execution
         # TODO: Implement splining
         thread_az = Thread(target=self._write_az, args=(az))
         thread_el = Thread(target=self._write_el, args=(el))
@@ -217,9 +218,9 @@ class Rotator(object):
             steps = round(cwdiff / self.step_angle)  # how many steps
             for i in range(steps):
                 self.pi.write(self.pin_az, 1)
-                time.sleep(self.step_delay)
+                time.sleep(self.step_delay / 1000.0)  # delay in ms
                 self.pi.write(self.pin_az, 0)
-                time.sleep(self.step_delay)
+                time.sleep(self.step_delay / 1000.0)
         # CCW
         else:
             self.pi.write(self.pin_dir, 0)  # CCW mode
@@ -227,9 +228,9 @@ class Rotator(object):
             steps = round(ccwdiff / self.step_angle)  # how many steps
             for i in range(steps):
                 self.pi.write(self.pin_az, 1)
-                time.sleep(self.step_delay)
+                time.sleep(self.step_delay / 1000.0)
                 self.pi.write(self.pin_az, 0)
-                time.sleep(self.step_delay)
+                time.sleep(self.step_delay / 1000.0)
 
         # Record actual azimuth
         self.az = steps * self.step_angle
