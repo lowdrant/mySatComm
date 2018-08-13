@@ -66,6 +66,14 @@ pip3 install pyserial --no-cache-dir
 echo; echo "Installing click..."
 pip3 install click --no-cache-dir
 
+# Copy utils
+# ----------
+# for loop is necessary because the dynamic path interferes with globbing
+# yes, it is hacky. If you have a more robust solution please let me know
+for i in $(ls "$script_path/../cmd-n-ctl/utils/"); do
+    cp "$script_path/../cmd-n-ctl/utils/$i" "$HOME/.satcomm/bin/"
+done
+
 # Cleanup
 # -------
 deactivate
