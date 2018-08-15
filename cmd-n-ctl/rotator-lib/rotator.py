@@ -10,7 +10,7 @@ from __future__ import absolute_import, print_function
 
 import os
 import time
-from multiprocessing import Process, Lock
+from multiprocessing import Lock, Process
 
 import pigpio
 
@@ -64,18 +64,25 @@ class Rotator(object):
         # Determining current position
         homepath = os.environ['HOME']
         self.statepath = homepath + '/.satcomm/rotator-state.conf'
+        # Check state file exists and is valid, otherwise assume zero position
         if os.path.isfile(self.statepath):
-            self.statefile = open(self.statepath, 'r+')
+            self.statefile = open(self.statepath, 'r')
             state = self.statefile.read()
-            self.az = float(state[state.index(':')+1:state.rindex(' ')])
-            self.el = float(state[state.rindex(':')+1:])
+            try:
+                self.az = float(state[state.index('Az:')+3:state.index('El:')])
+                self.el = float(state[state.index('El:')+3:])
+            except ValueError as e:
+                print('Bad state file! Assuming zero position.')
+                print(e)
+                self.az = 0
+                self.el = 0
+            self.statefile.close()
+            self.statefile = open(self.statepath, 'w')
         else:
             self.az = 0
             self.el = 0
             self.statefile = open(self.statepath, 'w')  # write first
             self._savestate()
-            self.statefile.close()  # close and reopen to avoid errors
-            self.statefile = open(self.statepath, 'r+')
 
         # other parameters
         self.pi = None  # pigpio interface object
@@ -122,11 +129,10 @@ class Rotator(object):
         self.zero()
 
         # Azimuth calibration
-        for az in (90, 180, 270, 360):
+        for az in (90, 180, 270):
             input('Press enter to move to {0} degrees Azimuth: '.format(az))
-            for i in range(5):
-                self.write(az/4*i, 0)
-                time.sleep(0.125)
+            time.sleep(0.01)
+            self.write(az, 0)
 
         input('Press enter to zero rotator again: ')
         time.sleep(0.25)
@@ -135,10 +141,8 @@ class Rotator(object):
         # Elevation calibration
         for el in (-10, 30, 45, 60, 80):
             input('Press enter to move to {0} degrees Elevation: '.format(el))
+            time.sleep(0.01)
             self.write(0, el)
-            for i in range(5):
-                self.write(0, el/4*i)
-                time.sleep(0.125)
 
         # Return to home position
         input('Calibration finished!\nPress enter to return to zero: ')
@@ -154,13 +158,12 @@ class Rotator(object):
         :type az:  float
         :param el: Elevation angle
         :type el:  float
+
+        .. note::
+        The interal az and el methods process input and save the state
         """
         if not self.attached:
             raise RotatorClassException('Rotator not attached!')
-
-        # Input processing
-        el += 90   # 0deg el is 90deg servo, b/c elevation goes up & down
-        az %= 360  # angles wrap at 360deg
 
         # Command motors
         # use threading to allow simultaneous execution
@@ -190,9 +193,13 @@ class Rotator(object):
         m = (2500 - 500) / (180 - 0) = 200 / 18
         b = 500
         """
-        if degrees > 90 or degrees < -10:
-            exceptstr = 'El angle is constrained between -10 and 90deg'
+        # Input processing
+        degrees += 90  # 0deg el is the servo midpoint, no 90deg servo
+        if degrees > 180 or degrees < 0:
+            exceptstr = 'Servo angle is constrained between -10 and 90deg'
             raise RotatorClassException(exceptstr)
+        if degrees == self.el:  # don't write if not moving
+            return
 
         # Move servo and then hold it in that position
         # TODO: Decide if resetting pulsewidth is necessary
@@ -204,7 +211,7 @@ class Rotator(object):
         self.mutex.release()
 
         # Save state
-        self.el = degrees
+        self.el = degrees - 90
         self.mutex.acquire()
         self._savestate()
         self.mutex.release()
@@ -215,6 +222,10 @@ class Rotator(object):
         :param degrees: Desired azimuth position in degrees
         :type degrees: float
         """
+        # Input Processing
+        degrees %= 360  # azimuth wraps at 2pi
+        if degrees == self.az:  # don't write if not moving
+            return
         # Choose rotation direction by minimizing distance
         cwdiff = abs(self.az - degrees)  # CW increment
         ccwdiff = abs(self.az - degrees + 360)  # CCW increment
@@ -246,7 +257,7 @@ class Rotator(object):
                 time.sleep(self.step_delay / 1000.0)
 
         # Record actual azimuth
-        self.az = steps * self.step_angle
+        self.az = steps * self.step_angle  # save actual azimuth
         self.mutex.acquire()
         self._savestate()
         self.mutex.release()
@@ -257,8 +268,8 @@ class Rotator(object):
         .. note::
         Update az and el BEFORE calling this method.
         """
-        self.statefile.seek(0)
-        self.statefile.write('Az:' + str(self.az) + ' El:' + str(self.el))
+        self.statefile.truncate(0)  # wipe file
+        self.statefile.write('Az:{:0.1f}El:{:0.1f}'.format(self.az, self.el))
         self.statefile.flush()
 
     # TODO: Test spline generation
