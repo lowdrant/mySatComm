@@ -10,7 +10,7 @@ from __future__ import absolute_import, print_function
 
 import os
 import time
-from threading import Thread
+from multiprocessing import Process, Lock
 
 import pigpio
 
@@ -81,6 +81,7 @@ class Rotator(object):
         self.pi = None  # pigpio interface object
         self.num_pts = 4  # internal const for _spline_trajectory()
         self.attached = False
+        self.mutex = Lock()
 
     def attach(self):
         """Initiate rotator control interface.
@@ -164,8 +165,8 @@ class Rotator(object):
         # Command motors
         # use threading to allow simultaneous execution
         # TODO: Implement splining
-        thread_az = Thread(target=self._write_az, args=[az])
-        thread_el = Thread(target=self._write_el, args=[el])
+        thread_az = Process(target=self._write_az, args=(az,))
+        thread_el = Process(target=self._write_el, args=(el,))
         thread_az.start()
         thread_el.start()
         thread_az.join()
@@ -194,14 +195,19 @@ class Rotator(object):
             raise RotatorClassException(exceptstr)
 
         # Move servo and then hold it in that position
+        # TODO: Decide if resetting pulsewidth is necessary
         us = 200 / 18.0 * degrees + 500  # eq: (2500-500)/(180-0) + 500
+        self.mutex.acquire()
         self.pi.set_servo_pulsewidth(self.pin_el, us)
         time.sleep(0.2)  # experimentally determined delay
         self.pi.set_servo_pulsewidth(self.pin_el, 0)
+        self.mutex.release()
 
         # Save state
         self.el = degrees
+        self.mutex.acquire()
         self._savestate()
+        self.mutex.release()
 
     def _write_az(self, degrees):
         """Low level stepper azimuth control (internal method).
@@ -220,9 +226,11 @@ class Rotator(object):
             time.sleep(0.001)  # propagation delay
             steps = round(cwdiff / self.step_angle)  # how many steps
             for i in range(steps):
+                self.mutex.acquire()
                 self.pi.write(self.pin_az, 1)
                 time.sleep(self.step_delay / 1000.0)  # delay in ms
                 self.pi.write(self.pin_az, 0)
+                self.mutex.release()
                 time.sleep(self.step_delay / 1000.0)
         # CCW
         else:
@@ -230,14 +238,18 @@ class Rotator(object):
             time.sleep(0.001)  # propagation delay
             steps = round(ccwdiff / self.step_angle)  # how many steps
             for i in range(steps):
+                self.mutex.acquire()
                 self.pi.write(self.pin_az, 1)
                 time.sleep(self.step_delay / 1000.0)
                 self.pi.write(self.pin_az, 0)
+                self.mutex.release()
                 time.sleep(self.step_delay / 1000.0)
 
         # Record actual azimuth
         self.az = steps * self.step_angle
+        self.mutex.acquire()
         self._savestate()
+        self.mutex.release()
 
     def _savestate(self):
         """Overwrites rotator position to persistent file (internal method).
