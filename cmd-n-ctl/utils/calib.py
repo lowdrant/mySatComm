@@ -16,4 +16,5 @@ from rotator import Rotator
 
 # Rotator setup
 rot = Rotator(17, 4, 18)
+rot.attach()
 rot.calibrate()  # zero before doing anything

@@ -63,16 +63,19 @@ class Rotator(object):
 
         # Determining current position
         homepath = os.environ['HOME']
-        self.statepath = homepath + '.satcomm/rotator-state.conf'
-        self.statefile = open(self.statepath, 'r+')
+        self.statepath = homepath + '/.satcomm/rotator-state.conf'
         if os.path.isfile(self.statepath):
+            self.statefile = open(self.statepath, 'r+')
             state = self.statefile.read()
-            self.az = float(state[state.index('Az: '):self.index(' ')])
-            self.el = float(state[state.index('El: '):-1])
+            self.az = float(state[state.index(':')+1:state.rindex(' ')])
+            self.el = float(state[state.rindex(':')+1:])
         else:
             self.az = 0
             self.el = 0
+            self.statefile = open(self.statepath, 'w')  # write first
             self._savestate()
+            self.statefile.close()  # close and reopen to avoid errors
+            self.statefile = open(self.statepath, 'r+')
 
         # other parameters
         self.pi = None  # pigpio interface object
@@ -161,8 +164,8 @@ class Rotator(object):
         # Command motors
         # use threading to allow simultaneous execution
         # TODO: Implement splining
-        thread_az = Thread(target=self._write_az, args=(az))
-        thread_el = Thread(target=self._write_el, args=(el))
+        thread_az = Thread(target=self._write_az, args=[az])
+        thread_el = Thread(target=self._write_el, args=[el])
         thread_az.start()
         thread_el.start()
         thread_az.join()
@@ -243,7 +246,7 @@ class Rotator(object):
         Update az and el BEFORE calling this method.
         """
         self.statefile.seek(0)
-        self.statefile.write('Az: ' + str(self.az) + ' El: ' + str(self.el))
+        self.statefile.write('Az:' + str(self.az) + ' El:' + str(self.el))
         self.statefile.flush()
 
     # TODO: Test spline generation
