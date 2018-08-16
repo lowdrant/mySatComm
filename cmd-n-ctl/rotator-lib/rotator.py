@@ -206,8 +206,8 @@ class Rotator(object):
         us = 200 / 18.0 * degrees + 500  # eq: (2500-500)/(180-0) + 500
         self.mutex.acquire()
         self.pi.set_servo_pulsewidth(self.pin_el, us)
-        time.sleep(0.2)  # experimentally determined delay
-        self.pi.set_servo_pulsewidth(self.pin_el, 0)
+        # time.sleep(0.2)  # experimentally determined delay
+        # self.pi.set_servo_pulsewidth(self.pin_el, 0)
         self.mutex.release()
 
         # Save state
@@ -226,16 +226,48 @@ class Rotator(object):
         degrees %= 360  # azimuth wraps at 2pi
         if degrees == self.az:  # don't write if not moving
             return
-        # Choose rotation direction by minimizing distance
-        cwdiff = abs(self.az - degrees)  # CW increment
-        ccwdiff = abs(self.az - degrees + 360)  # CCW increment
+
+        # Decide direction by minimizing angular distance
+        # Lots of if cases for figuring out what the right calculation is
+        # basically figuring out which side of the line between pos and its
+        # antipode you're on will tell
+        degrees %= 360  # wrap at 2pi
+        posmirror = (degrees + 180) % 360  # antipode of degrees
+        if self.az < posmirror and self.az > degrees:
+            cw = True
+            dist = self.az - degrees
+        elif degrees > 180 and self.az > degrees:
+            cw = True
+            dist = self.az - degrees
+        elif degrees > 180 and self.az < posmirror:
+            cw = True
+            dist = 360 + self.az - degrees
+        elif self.az < degrees and self.az > posmirror:
+            cw = False
+            dist = degrees - self.az
+        elif degrees < 180 and self.az < degrees:
+            cw = False
+            dist = degrees - self.az
+        elif degrees < 180 and self.az > posmirror:
+            cw = False
+            dist = 360 + degrees - self.az
+        else:  # just compute distance and go ccw if pos dist, cw if neg dist
+            dist = abs(degrees - self.az)
+            cw = True if self.az < degrees else False
+
+        # Step motor
+        if cw:
+            self.pi.write(self.dir_pin, 1)
+        else:
+            self.pi.write(self.dir_pin, 0)
+        time.sleep(self.step_delay)  # setup time
 
         # Determine num steps and rotate
         # CW
-        if cwdiff < ccwdiff:
+        if cw:
             self.pi.write(self.pin_dir, 1)  # CW mode
             time.sleep(0.001)  # propagation delay
-            steps = round(cwdiff / self.step_angle)  # how many steps
+            steps = round(dist / self.step_angle)  # how many steps
             for i in range(steps):
                 self.mutex.acquire()
                 self.pi.write(self.pin_az, 1)
@@ -247,7 +279,7 @@ class Rotator(object):
         else:
             self.pi.write(self.pin_dir, 0)  # CCW mode
             time.sleep(0.001)  # propagation delay
-            steps = round(ccwdiff / self.step_angle)  # how many steps
+            steps = round(dist / self.step_angle)  # how many steps
             for i in range(steps):
                 self.mutex.acquire()
                 self.pi.write(self.pin_az, 1)
@@ -269,7 +301,7 @@ class Rotator(object):
         Update az and el BEFORE calling this method.
         """
         self.statefile.truncate(0)  # wipe file
-        self.statefile.write('Az:{:0.1f}El:{:0.1f}'.format(self.az, self.el))
+        self.statefile.write('Az:{:.0f}El:{:.0f}'.format(self.az, self.el))
         self.statefile.flush()
 
     # TODO: Test spline generation
