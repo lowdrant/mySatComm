@@ -11,37 +11,36 @@
 
 set -o errexit
 set -o pipefail
-echo "Running stitcher.sh"; echo
+echo "Running stitcher.sh"
 
 # servo control daemon
 if [ $(ps aux | grep pigpiod | wc --lines) -gt 1 ]
 then
-  echo "pigpiod daemon already running!"
+  echo "  pigpiod daemon already running"
 else
   sudo pigpiod
-  echo "pigpiod activated!"
+  echo "  pigpiod activated"
 fi
 
 # stitch custom serial ports together
 if [ $(ps aux | grep socat | wc --lines) -gt 1 ]
 then
-  echo "socat already running!"
+  echo "  socat already running"
 else
   sudo socat PTY,link="$HOME/.satcomm/ttySatT",user="$USER"\
              PTY,link="$HOME/.satcomm/ttySatR",user="$USER" &
-  echo "socat started!"
+  echo "  socat started"
 fi
 
 # rotator control
 # use EasyComm I protocol
 if [ $(ps aux | grep rotctld | wc --lines) -gt 1 ]
 then
-  echo "rotctld already running!"
+  echo "  rotctld already running"
 else
   sudo rotctld -m 201 -T "raspberrypi.local" -vvvvv -r "$HOME/.satcomm/ttySatT" &> rotlog.log &
-  echo "rotctld activated using EasyComm I protocol!"
+  echo "  rotctld activated using EasyComm I protocol"
 fi
 
-echo
-echo "Resources successfully stitched!"
+echo "Resources successfully stitched"
 exit 0

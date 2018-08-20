@@ -11,14 +11,11 @@
 # leads directly to unstitcher
 set -o nounset -o pipefail
 
-# activate venv
-source "$HOME/.satcomm/bin/activate"
-
 # stitch resources
 stitcher.sh
 
 # begin interfacing
-simple_interface.py
+interface.py
 
 # cleanup
 unstitcher.sh
