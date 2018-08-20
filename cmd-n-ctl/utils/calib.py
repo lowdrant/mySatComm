@@ -8,13 +8,9 @@ file:   calib.py
 """
 from __future__ import absolute_import, print_function
 
-import os
-
-import serial
-
 from rotator import Rotator
 
 # Rotator setup
-rot = Rotator(17, 4, 18)
+rot = Rotator(23, 17, 22)
 rot.attach()
 rot.calibrate()  # zero before doing anything

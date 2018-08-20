@@ -9,13 +9,9 @@ file:   zero.py
 """
 from __future__ import absolute_import, print_function
 
-import os
-
-import serial
-
 from rotator import Rotator
 
 # Rotator setup
 rot = Rotator()
-rot.attach(17, 4, 18)  # from my soldershield design
+rot.attach(23, 17, 22)  # from my soldershield design
 rot.zero()  # zero before doing anything

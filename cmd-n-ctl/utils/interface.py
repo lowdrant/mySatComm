@@ -17,7 +17,7 @@ import serial
 from rotator import Rotator
 
 # Rotator setup
-rot = Rotator(17, 4, 18)
+rot = Rotator(23, 17, 22)
 rot.zero()  # zero before doing anything
 homedir = os.environ['HOME']
 ser = serial.Serial(port=homedir + '/.satcomm/ttySatR',
