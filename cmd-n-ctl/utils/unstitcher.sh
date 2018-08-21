@@ -26,16 +26,16 @@ for name in "${proc_names[@]}"; do
 
   # check if actually running
   if ! [ $(ps aux | grep "$name" | wc --lines) -gt 1 ]; then
-    echo "$name isn't running?"
+    echo "  $name isn't running?"
 
   # killing process
   else
     get_pid "$name"
     sudo kill $pid
     if [ $? ]; then
-      echo "$name killed!"
+      echo "  $name killed!"
     else
-      echo "Failed to kill $name !"
+      echo "  Failed to kill $name!"
     fi
   fi
 done

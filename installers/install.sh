@@ -71,8 +71,9 @@ pip3 install click --no-cache-dir
 # for loop is necessary because the dynamic path interferes with globbing
 # yes, it is hacky. If you have a more robust solution please let me know
 for i in $(ls "$script_path/../cmd-n-ctl/utils/"); do
-    cp "$script_path/../cmd-n-ctl/utils/$i" "$HOME/.satcomm/bin/"
+    cp -r "$script_path/../cmd-n-ctl/utils/$i" "$HOME/.satcomm/bin/"
 done
+cp "../run.sh" "$HOME/.satcomm/bin/"
 
 # Cleanup
 # -------

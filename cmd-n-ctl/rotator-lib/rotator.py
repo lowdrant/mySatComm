@@ -71,9 +71,8 @@ class Rotator(object):
             try:
                 self.az = float(state[state.index('Az:')+3:state.index('El:')])
                 self.el = float(state[state.index('El:')+3:])
-            except ValueError as e:
+            except ValueError:
                 print('Bad state file! Assuming zero position.')
-                print(e)
                 self.az = 0
                 self.el = 0
             self.statefile.close()

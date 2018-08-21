@@ -11,19 +11,36 @@ file:   interface.py
 from __future__ import absolute_import, print_function
 
 import os
+import signal
+import sys
 
 import serial
 
 from rotator import Rotator
 
+print('\nStarting interface.py')
+
 # Rotator setup
-rot = Rotator(17, 4, 18)
+rot = Rotator(23, 17, 22)
+rot.attach()
+print('  Rotator attached')
 rot.zero()  # zero before doing anything
 homedir = os.environ['HOME']
 ser = serial.Serial(port=homedir + '/.satcomm/ttySatR',
                     baudrate=38400, timeout=0.5)
+print('  Serial port open')
+
+# SIGINT Handling
+def SIGINT_handler(sig, frame):
+    """Gracefully exits from C-c."""
+    print('Releasing resources and exiting interface')
+    rot.detach()
+    # ser.close()
+    sys.exit(0)
+signal.signal(signal.SIGINT, SIGINT_handler)
 
 # Reading input and Commanding servos
+print('  Interfacing now')
 while True:
     try:
         serdata = ser.readlines()
