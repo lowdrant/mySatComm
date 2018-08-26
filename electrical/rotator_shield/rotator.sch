@@ -3361,7 +3361,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 </class>
 </classes>
 <parts>
-<part name="U1" library="SparkFun-DiscreteSemi" deviceset="DUAL-OPTOISOLATOR" device="_SOIC8" value="OPTOISOLATOR"/>
+<part name="U1" library="SparkFun-DiscreteSemi" deviceset="DUAL-OPTOISOLATOR" device="_SOIC8" value=""/>
 <part name="SERVO" library="con-lstb" library_urn="urn:adsk.eagle:library:162" deviceset="MA03-1" device="" package3d_urn="urn:adsk.eagle:package:8339/1"/>
 <part name="P+1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="PWR_GND" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
@@ -3380,6 +3380,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="R1" library="SparkFun-Resistors" deviceset="1KOHM" device="-0603-1/10W-1%" value="1k"/>
 <part name="R2" library="SparkFun-Resistors" deviceset="68OHM" device="-0603-1/10W-1%" value="50"/>
 <part name="S1" library="SparkFun-Switches" deviceset="SWITCH-SPDT" device="-PTH-11.6X4.0MM"/>
+<part name="R3" library="SparkFun-Resistors" deviceset="68OHM" device="-0603-1/10W-1%" value="100"/>
 </parts>
 <sheets>
 <sheet>
@@ -3406,6 +3407,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <instance part="R1" gate="G$1" x="55.88" y="88.9" rot="R90"/>
 <instance part="R2" gate="G$1" x="68.58" y="88.9" rot="R90"/>
 <instance part="S1" gate="1" x="35.56" y="93.98"/>
+<instance part="R3" gate="G$1" x="96.52" y="86.36" rot="R180"/>
 </instances>
 <busses>
 </busses>
@@ -3464,14 +3466,23 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <wire x1="91.44" y1="99.06" x2="91.44" y2="106.68" width="0.1524" layer="91"/>
 <wire x1="91.44" y1="106.68" x2="104.14" y2="106.68" width="0.1524" layer="91"/>
 <pinref part="PWR_GND" gate="1" pin="GND"/>
-<wire x1="104.14" y1="106.68" x2="104.14" y2="83.82" width="0.1524" layer="91"/>
+<wire x1="104.14" y1="106.68" x2="104.14" y2="86.36" width="0.1524" layer="91"/>
+<pinref part="R3" gate="G$1" pin="1"/>
+<wire x1="104.14" y1="86.36" x2="104.14" y2="83.82" width="0.1524" layer="91"/>
+<wire x1="101.6" y1="86.36" x2="104.14" y2="86.36" width="0.1524" layer="91"/>
+<junction x="104.14" y="86.36"/>
 </segment>
 </net>
 <net name="N$1" class="0">
 <segment>
 <pinref part="U1" gate="G$1" pin="EM1"/>
 <pinref part="SERVO" gate="G$1" pin="1"/>
-<wire x1="86.36" y1="93.98" x2="91.44" y2="93.98" width="0.1524" layer="91"/>
+<wire x1="86.36" y1="93.98" x2="88.9" y2="93.98" width="0.1524" layer="91"/>
+<pinref part="R3" gate="G$1" pin="2"/>
+<wire x1="88.9" y1="93.98" x2="91.44" y2="93.98" width="0.1524" layer="91"/>
+<wire x1="91.44" y1="86.36" x2="88.9" y2="86.36" width="0.1524" layer="91"/>
+<wire x1="88.9" y1="86.36" x2="88.9" y2="93.98" width="0.1524" layer="91"/>
+<junction x="88.9" y="93.98"/>
 </segment>
 </net>
 <net name="VSS" class="0">

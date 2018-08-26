@@ -3081,27 +3081,6 @@ You are welcome to use this library for commercial purposes. For attribution, we
 </device>
 </devices>
 </deviceset>
-<deviceset name="300OHM" prefix="R">
-<description>&lt;h3&gt;300Ω resistor&lt;/h3&gt;
-&lt;p&gt;A resistor is a passive two-terminal electrical component that implements electrical resistance as a circuit element. Resistors act to reduce current flow, and, at the same time, act to lower voltage levels within circuits. - Wikipedia&lt;/p&gt;</description>
-<gates>
-<gate name="G$1" symbol="RESISTOR" x="0" y="0"/>
-</gates>
-<devices>
-<device name="-0603-1/10W-1%" package="0603">
-<connects>
-<connect gate="G$1" pin="1" pad="1"/>
-<connect gate="G$1" pin="2" pad="2"/>
-</connects>
-<technologies>
-<technology name="">
-<attribute name="PROD_ID" value="RES_10328"/>
-<attribute name="VALUE" value="300"/>
-</technology>
-</technologies>
-</device>
-</devices>
-</deviceset>
 </devicesets>
 </library>
 </libraries>
@@ -3132,7 +3111,6 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="LED1" library="led" library_urn="urn:adsk.eagle:library:259" deviceset="LED" device="" package3d_urn="urn:adsk.eagle:package:15825/1"/>
 <part name="R1" library="SparkFun-Resistors" deviceset="1KOHM" device="-0603-1/10W-1%" value="1k"/>
 <part name="R2" library="SparkFun-Resistors" deviceset="68OHM" device="-0603-1/10W-1%" value="50"/>
-<part name="R3" library="SparkFun-Resistors" deviceset="300OHM" device="-0603-1/10W-1%" value="300"/>
 </parts>
 <sheets>
 <sheet>
@@ -3140,9 +3118,9 @@ You are welcome to use this library for commercial purposes. For attribution, we
 </plain>
 <instances>
 <instance part="U1" gate="G$1" x="81.28" y="86.36"/>
-<instance part="SERVO" gate="G$1" x="114.3" y="91.44" rot="MR0"/>
-<instance part="P+1" gate="VCC" x="96.52" y="96.52"/>
-<instance part="PWR_GND" gate="1" x="96.52" y="76.2"/>
+<instance part="SERVO" gate="G$1" x="106.68" y="91.44" rot="MR0"/>
+<instance part="P+1" gate="VCC" x="91.44" y="96.52"/>
+<instance part="PWR_GND" gate="1" x="111.76" y="81.28"/>
 <instance part="X1" gate="-1" x="40.64" y="91.44"/>
 <instance part="X1" gate="-2" x="40.64" y="86.36"/>
 <instance part="P+3" gate="VCC" x="48.26" y="99.06"/>
@@ -3158,7 +3136,6 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <instance part="LED1" gate="G$1" x="50.8" y="91.44" rot="R90"/>
 <instance part="R1" gate="G$1" x="55.88" y="83.82" rot="R90"/>
 <instance part="R2" gate="G$1" x="68.58" y="83.82" rot="R90"/>
-<instance part="R3" gate="G$1" x="96.52" y="83.82" rot="R90"/>
 </instances>
 <busses>
 </busses>
@@ -3166,12 +3143,12 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <net name="VCC" class="0">
 <segment>
 <pinref part="U1" gate="G$1" pin="CL1"/>
-<wire x1="86.36" y1="91.44" x2="96.52" y2="91.44" width="0.1524" layer="91"/>
+<wire x1="86.36" y1="91.44" x2="91.44" y2="91.44" width="0.1524" layer="91"/>
 <pinref part="P+1" gate="VCC" pin="VCC"/>
-<wire x1="96.52" y1="91.44" x2="96.52" y2="93.98" width="0.1524" layer="91"/>
+<wire x1="91.44" y1="91.44" x2="91.44" y2="93.98" width="0.1524" layer="91"/>
 <pinref part="SERVO" gate="G$1" pin="2"/>
-<wire x1="106.68" y1="91.44" x2="96.52" y2="91.44" width="0.1524" layer="91"/>
-<junction x="96.52" y="91.44"/>
+<wire x1="99.06" y1="91.44" x2="91.44" y2="91.44" width="0.1524" layer="91"/>
+<junction x="91.44" y="91.44"/>
 </segment>
 <segment>
 <pinref part="X1" gate="-1" pin="KL"/>
@@ -3194,15 +3171,6 @@ You are welcome to use this library for commercial purposes. For attribution, we
 </net>
 <net name="GND" class="0">
 <segment>
-<pinref part="PWR_GND" gate="1" pin="GND"/>
-<pinref part="R3" gate="G$1" pin="1"/>
-<wire x1="104.14" y1="78.74" x2="96.52" y2="78.74" width="0.1524" layer="91"/>
-<junction x="96.52" y="78.74"/>
-<pinref part="SERVO" gate="G$1" pin="3"/>
-<wire x1="106.68" y1="93.98" x2="104.14" y2="93.98" width="0.1524" layer="91"/>
-<wire x1="104.14" y1="93.98" x2="104.14" y2="78.74" width="0.1524" layer="91"/>
-</segment>
-<segment>
 <pinref part="GND1" gate="1" pin="GND"/>
 <pinref part="R1" gate="G$1" pin="1"/>
 <wire x1="55.88" y1="78.74" x2="48.26" y2="78.74" width="0.1524" layer="91"/>
@@ -3220,15 +3188,20 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <pinref part="GND2" gate="1" pin="GND"/>
 <junction x="114.3" y="45.72"/>
 </segment>
+<segment>
+<pinref part="SERVO" gate="G$1" pin="3"/>
+<wire x1="96.52" y1="93.98" x2="99.06" y2="93.98" width="0.1524" layer="91"/>
+<wire x1="96.52" y1="93.98" x2="96.52" y2="101.6" width="0.1524" layer="91"/>
+<wire x1="96.52" y1="101.6" x2="111.76" y2="101.6" width="0.1524" layer="91"/>
+<pinref part="PWR_GND" gate="1" pin="GND"/>
+<wire x1="111.76" y1="101.6" x2="111.76" y2="83.82" width="0.1524" layer="91"/>
+</segment>
 </net>
 <net name="N$1" class="0">
 <segment>
 <pinref part="U1" gate="G$1" pin="EM1"/>
-<wire x1="86.36" y1="88.9" x2="96.52" y2="88.9" width="0.1524" layer="91"/>
 <pinref part="SERVO" gate="G$1" pin="1"/>
-<wire x1="96.52" y1="88.9" x2="106.68" y2="88.9" width="0.1524" layer="91"/>
-<pinref part="R3" gate="G$1" pin="2"/>
-<junction x="96.52" y="88.9"/>
+<wire x1="86.36" y1="88.9" x2="99.06" y2="88.9" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="GPIO4" class="0">

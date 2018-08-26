@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="8.6.0">
+<eagle version="9.1.3">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="no" active="no"/>
@@ -3474,13 +3474,6 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <wire x1="86.36" y1="93.98" x2="91.44" y2="93.98" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="GPIO4" class="0">
-<segment>
-<pinref part="U1" gate="G$1" pin="A1"/>
-<label x="68.58" y="96.52" size="1.778" layer="95"/>
-<wire x1="68.58" y1="96.52" x2="73.66" y2="96.52" width="0.1524" layer="91"/>
-</segment>
-</net>
 <net name="VSS" class="0">
 <segment>
 <pinref part="B1" gate="G$1" pin="GND1"/>
@@ -3566,12 +3559,12 @@ You are welcome to use this library for commercial purposes. For attribution, we
 </net>
 <net name="GPIO17" class="0">
 <segment>
-<pinref part="B1" gate="G$1" pin="STEP"/>
-<wire x1="38.1" y1="35.56" x2="25.4" y2="35.56" width="0.1524" layer="91"/>
-<label x="25.4" y="35.56" size="1.778" layer="95"/>
+<pinref part="U1" gate="G$1" pin="A1"/>
+<label x="68.58" y="96.52" size="1.778" layer="95"/>
+<wire x1="68.58" y1="96.52" x2="73.66" y2="96.52" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="GPIO18" class="0">
+<net name="GPIO22" class="0">
 <segment>
 <pinref part="B1" gate="G$1" pin="DIR"/>
 <wire x1="38.1" y1="33.02" x2="25.4" y2="33.02" width="0.1524" layer="91"/>
@@ -3596,6 +3589,13 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <segment>
 <pinref part="X1" gate="-1" pin="KL"/>
 <pinref part="S1" gate="1" pin="P"/>
+</segment>
+</net>
+<net name="GPIO23" class="0">
+<segment>
+<pinref part="B1" gate="G$1" pin="STEP"/>
+<wire x1="38.1" y1="35.56" x2="25.4" y2="35.56" width="0.1524" layer="91"/>
+<label x="25.4" y="35.56" size="1.778" layer="95"/>
 </segment>
 </net>
 </nets>
