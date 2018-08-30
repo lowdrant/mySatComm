@@ -87,6 +87,10 @@ On your PC, install [GPredict](http://gpredict.oz9aec.net/), [GNU Radio](https:/
 	* PWM less noisy and more reliable than RPi-GPIO or wiringPi
 	* Simple Python interface
 
+## SDR Sources & Acknowledgements
+* Wolfgang Nagele for his [GRC Gpredict Doppler shift correction block](https://github.com/wnagele/gr-gpredict-doppler)
+* Alexandru Csete for [this tutorial for an APT decoder in GRC](http://oz9aec.net/radios/gnu-radio/simple-apt-decoder-prototype)
+
 ## Author
 Marion Anderson - [lmander42](https://github.com/lmander42)
 
