@@ -4,7 +4,7 @@ Python class unique to this repo. Used to communicate with servos in my homebrew
 
 ## Design Notes
 
-This interface relies on 3 servos. Antenna rotators are expected to support 360 degrees azimuth rotation, but servos are typically limited to 180 degrees of rotation. Hence 2 servos for 360 degrees of azimuth rotation.
+This interface relies on 1 servo and 1 stepper. The servo controls elevation rotation, as it can only support ~180 degrees of rotation, and the stepper handles rotation, as it can rotate 360 degrees in either direction.
 
 During setup, I recommend running the calibrate method. It will set the rotator to 0 degrees Azimuth, 0 degrees Elevation. You should then align the rotator with Absolute North for GPredict's oritentation calculations.
 
