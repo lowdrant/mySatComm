@@ -92,7 +92,7 @@ On your PC, install [GPredict](http://gpredict.oz9aec.net/), [GNU Radio](https:/
 * Alexandru Csete for [this tutorial for an APT decoder in GRC](http://oz9aec.net/radios/gnu-radio/simple-apt-decoder-prototype)
 
 ## Author
-Marion Anderson - [lmander42](https://github.com/lmander42)
+Marion Anderson - [lowdrant](https://github.com/lowdrant)
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) file for details
